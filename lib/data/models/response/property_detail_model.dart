@@ -82,45 +82,57 @@ class PropertyDetailModel {
   });
 
   factory PropertyDetailModel.fromJson(Map<String, dynamic> json) => PropertyDetailModel(
-    id: json['_id'],
-    uniqueId: json['unique_id'],
-    userType: json['user_type'],
-    slug: json['slug'],
-    title: json['title'],
-    description: json['description'],
-    metaTitle: json['meta_title'],
-    metaDescription: json['meta_description'],
-    address: json['address'],
-    views: json['views'],
-    unit: json['unit'],
-    galleryImages: List<GalleryImage>.from(json['gallery_images'].map((x) => GalleryImage.fromJson(x))),
-    videoLink: json['video_link'],
-    room: json['room'],
-    space: json['space'],
-    bedroom: json['bedroom'],
-    bathroom: json['bathroom'],
-    floor: json['floor'],
-    kitchen: json['kitchen'],
-    // builtYear: DateTime.parse(json['built_year']),
-    area: json['area'],
-    direction: json['direction'],
-    price: json['price'],
-    marketPrice: json['market_price'],
-    isFeatured: json['is_featured'],
-    topProperty: json['top_property'],
+    id: json['_id'] ?? '',
+    uniqueId: json['unique_id'] ?? '',
+    userType: json['user_type'] ?? '',
+    slug: json['slug'] ?? '',
+    title: json['title'] ?? '',
+    description: json['description'] ?? '',
+    metaTitle: json['meta_title'] ?? '',
+    metaDescription: json['meta_description'] ?? '',
+    address: json['address'] ?? '',
+    views: json['views'] ?? 0,
+    unit: json['unit'] ?? 0,
+    galleryImages: json['gallery_images'] != null
+        ? List<GalleryImage>.from(json['gallery_images'].map((x) => GalleryImage.fromJson(x)))
+        : [],
+    videoLink: json['video_link'] ?? '',
+    room: json['room'] ?? 0,
+    space: json['space'] ?? 0,
+    bedroom: json['bedroom'] ?? 0,
+    bathroom: json['bathroom'] ?? 0,
+    floor: json['floor'] ?? 0,
+    kitchen: json['kitchen'] ?? 0,
+    area: json['area'] ?? 0,
+    direction: json['direction'] ?? '',
+    price: json['price'] ?? 0,
+    marketPrice: json['market_price'] ?? 0,
+    isFeatured: json['is_featured'] ?? false,
+    topProperty: json['top_property'] ?? false,
     expiryDate: json['expiry_date'] != null ? DateTime.parse(json['expiry_date']) : null,
-    status: json['status'],
-    createdAt: DateTime.parse(json['created_at']),
-    type: PropertyType.fromJson(json['type']),
-    purpose: PropertyPurpose.fromJson(json['purpose']),
-    category: PropertyCategory.fromJson(json['category']),
-    amenities: List<Amenity>.from(json['amenity'].map((x) => Amenity.fromJson(x))),
-    displayImages: List<DisplayImage>.from(json['display_image'].map((x) => DisplayImage.fromJson(x))),
-    state: State.fromJson(json['state']),
-    city: City.fromJson(json['city']),
-    locality: List<dynamic>.from(json['locality']),
-    allImages: List<AllImages>.from(json['all_images'].map((x) => AllImages.fromJson(x))),
+    status: json['status'] ?? '',
+    createdAt: DateTime.parse(json['created_at'] ?? ''),
+    type: json['type_id'] != null ? PropertyType.fromJson(json['type_id']) : PropertyType(id: '', name: ''),
+    purpose: json['purpose_id'] != null ? PropertyPurpose.fromJson(json['purpose_id']) : PropertyPurpose(id: '', name: ''),
+    category: json['category_id'] != null ? PropertyCategory.fromJson(json['category_id']) : PropertyCategory(id: '', name: ''),
+    amenities: json['amenity_id'] != null
+        ? List<Amenity>.from(json['amenity_id'].map((x) => Amenity.fromJson(x)))
+        : [],
+    displayImages: json['display_image_id'] != null
+        ? List<DisplayImage>.from(json['display_image_id'].map((x) => DisplayImage.fromJson(x)))
+        : [],
+    state: json['state_id'] != null ? State.fromJson(json['state_id']) : State(id: '', name: ''),
+    city: json['city_id'] != null ? City.fromJson(json['city_id']) : City(id: '', name: ''),
+    locality: json['locality_id'] != null ? List<dynamic>.from(json['locality_id']) : [],
+    allImages: json['all_images'] != null
+        ? List<AllImages>.from((json['all_images'] as List<dynamic>).expand((x) =>
+    x is List ? x : [x]
+    ).map((x) => AllImages.fromJson(x as Map<String, dynamic>)))
+        : [],
   );
+
+
+
 
   Map<String, dynamic> toJson() => {
     '_id': id,

@@ -27,7 +27,7 @@ class NewlyConstructedSection extends StatelessWidget {
       child:
 
       GetBuilder<PropertyController>(builder: (propertyControl) {
-        final list = propertyControl.propertyList;
+        final list = propertyControl.featuredPropertyList;
         final isListEmpty = list == null || list.isEmpty ;
         final isLoading = propertyControl.isPropertyLoading;
         return  isListEmpty && !isLoading
@@ -40,7 +40,7 @@ class NewlyConstructedSection extends StatelessWidget {
         const NewlyConstructedSectionShimmer() :
           Column(crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Newly Constructed",style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault),),
+            Text("Featured Properties",style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault),),
             sizedBox12(),
             SizedBox(
               height: Get.size.height * 0.40,

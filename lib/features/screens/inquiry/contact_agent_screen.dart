@@ -25,7 +25,6 @@ class ContactAgentScreen extends StatelessWidget {
       ),
       appBar: const CustomAppBar(title: 'Contact Agent',isBackButtonExist: true,),
       body: SingleChildScrollView(
-
         child: Padding(
           padding:  const EdgeInsets.all(Dimensions.paddingSizeDefault),
           child: Column(
@@ -45,14 +44,11 @@ class ContactAgentScreen extends StatelessWidget {
               Row(children: [
                 Image.asset(Images.icAgentProfile,height:Dimensions.fontSize40,),
                 sizedBoxW10(),
-                Column(
+                const Column(
                   children: [
                     Text('Agent Name',style: senRegular,),
-
-
                   ],
                 )
-
               ],),
               sizedBoxDefault(),
               CustomTextField(

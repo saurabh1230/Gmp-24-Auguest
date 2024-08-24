@@ -88,7 +88,7 @@ class HighlightFactsSection extends StatelessWidget {
                   const Divider(),
                   buildRow(context,"Total Rooms",room),
                   const Divider(),
-                  buildRow(context,"Total Space",space),
+                  buildRow(context,"Bhk",'${space}'),
                   const Divider(),
                   buildRow(context,"Total Floor",floor),
                   const Divider(),

@@ -125,6 +125,7 @@ class BookmarkController extends GetxController implements GetxService {
   List<BookmarkPropertyModel>? _bookmarkedPropertyList;
   List<BookmarkPropertyModel>? get bookmarkedPropertyList => _bookmarkedPropertyList;
 
+
   Future<void> getBookmarkedPropertyList({
     String? page,
   }) async {

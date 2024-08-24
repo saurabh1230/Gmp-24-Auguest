@@ -100,7 +100,7 @@ class SearchPropertyScreen extends StatelessWidget {
                       itemBuilder: (_, i) {
                         return RecommendedItemCard(
                           vertical: true,
-                          image: list[i].displayImages![0].image,
+                          image: list[i].displayImages[0].image,
                           title: list[i].title.toString(),
                           description: list[i].description.toString(),
                           price: '${list[i].price.toString()}',

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
-
+import 'package:intl/intl.dart';
 class ExploreController extends GetxController implements GetxService {
   ExploreController();
 
@@ -162,6 +162,14 @@ class ExploreController extends GetxController implements GetxService {
     startPriceValue.value = newValues.start;
     endPriceValue.value = newValues.end;
     update();
+  }
+
+  final NumberFormat numberFormat = NumberFormat('#,###');
+
+// Function to format the price without unnecessary decimal places
+  String formatPrice(double value) {
+    // Convert to integer and then to string
+    return value.toInt().toString();
   }
 
   // Optional: Format numbers as currency

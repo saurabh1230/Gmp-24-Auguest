@@ -14,19 +14,30 @@ class PropertiesImageSection extends StatelessWidget {
   final Function() onTap;
   final Color color;
 
-  const PropertiesImageSection({super.key, required this.galleryImages, required this.onTap, required this.color});
+  const PropertiesImageSection({
+    super.key,
+    required this.galleryImages,
+    required this.onTap,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // Map the galleryImages to full URLs
-    final fullImageUrls = galleryImages.map((image) => '${AppConstants.imgBaseUrl}${image}').toList();
+    // Map AllImages instances to their URLs
+    final fullImageUrls = galleryImages.map((image) => '${AppConstants.imgBaseUrl}${image.image}').toList();
+
+    print('========> check all images $fullImageUrls');
 
     return GetBuilder<PropertyController>(builder: (controller) {
       return Stack(
         children: [
           if (fullImageUrls.isNotEmpty)
             fullImageUrls.length == 1
-                ? CustomNetworkImageWidget(image: fullImageUrls[0],height: 250,radius: 0,)
+                ? CustomNetworkImageWidget(
+              image: fullImageUrls[0],
+              height: 250,
+              radius: 0,
+            )
                 : FanCarouselImageSlider.sliderType2(
               indicatorActiveColor: Theme.of(context).primaryColor,
               imagesLink: fullImageUrls,

@@ -94,7 +94,7 @@ class _SavedScreenState extends State<SavedScreen> {
                   return RecommendedItemCard(
                     vertical: true,
 
-                    image: list[i].displayImage!.image.toString(),
+                    image: list[i].displayImages[0].image.toString(),
                     title:  list[i].title.toString(),
                     description:  list[i].description.toString(),
                     price: list[i].price.toString(),

@@ -98,10 +98,6 @@ class SearchScreen extends StatelessWidget {
             final recentSearchListEmpty =
                 recentSearchList == null || recentSearchList.isEmpty;
             return
-
-
-
-
               Column(
                 children: [
                   Padding(

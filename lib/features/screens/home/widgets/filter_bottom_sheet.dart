@@ -102,7 +102,7 @@ class FilterBottomSheet extends StatelessWidget {
                                         authControl.selectPropertyPurposeId(newValue);
                                         print(authControl.propertyPurposeID);
                                       },
-                                      title: val.name.toString(),
+                                      title: val.name.toString().contains("Sale") ? "Buy" : val.name.toString(),
                                       isSelected: authControl.propertyPurposeID == val.sId.toString(), // Highlight if selected
                                     );
                                   },
@@ -612,20 +612,20 @@ class FilterBottomSheet extends StatelessWidget {
                                       onPressed: () {
                                         print('propertyPurposeID: ${authControl.propertyPurposeID}');
                                         print('propertyTypeID: ${authControl.propertyTypeIDs.join(',')}');
-                                        print('startPriceValue: ${controller.startPriceValue.toString()}');
-                                        print('endPriceValue: ${controller.endPriceValue.toString()}');
+                                        print('startPriceValue: ${controller.formatPrice(controller.startPriceValue.toDouble())}');
+                                        print('endPriceValue: ${controller.formatPrice(controller.endPriceValue.toDouble())}');
                                         print('spaceTypeID: ${controller.spaceTypeIDs.join(',')}');
                                         print('stateId: ${controller.stateId}');
                                         print('bathroomID: ${controller.bathroomIDs.join(',')}');
                                         print('propertyCategoryIds: ${controller.propertyCategoryIds.join(', ')}');
                                         print('amenityId: ${authControl.amenityIds.join(',')}');
                                         Get.find<PropertyController>().getPropertyList(page: '1',
-                                          stateId: controller.stateId,
-                                          cityId: controller.nearByLocationId,
+                                          stateId: '',
+                                          cityId: '',
                                           purposeId: authControl.propertyPurposeID,
                                           typeId: authControl.propertyTypeIDs.join(','),
-                                          minPrice: controller.startPriceValue.toString(),
-                                          maxPrice: controller.endPriceValue.toString(),
+                                          minPrice: controller.formatPrice(controller.startPriceValue.toDouble()),
+                                          maxPrice: controller.formatPrice(controller.endPriceValue.toDouble()),
                                           space: controller.spaceTypeIDs.join(','),
                                           bathroom: controller.bathroomIDs.join(','),
                                           categoryId:  controller.propertyCategoryIds.join(', '),
@@ -637,9 +637,9 @@ class FilterBottomSheet extends StatelessWidget {
                                   )
                                 ],
                               ),
-
                             ],
-                          )),
+                          ),
+                      ),
                     );
                   });
                 }),

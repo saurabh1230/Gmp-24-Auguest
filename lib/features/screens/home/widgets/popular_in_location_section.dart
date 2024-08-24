@@ -23,9 +23,11 @@ class PopularInLocationSectionSection extends StatelessWidget {
       padding: const EdgeInsets.only(left:Dimensions.paddingSizeDefault,top:Dimensions.paddingSizeDefault,
         bottom:Dimensions.paddingSizeDefault,),
       child: GetBuilder<PropertyController>(builder: (propertyControl) {
-        final list = propertyControl.propertyList;
+        final list = propertyControl.topPropertyList;
         final isListEmpty = list == null || list.isEmpty;
         final isLoading = propertyControl.isPropertyLoading;
+
+        print('======> top property lenght ${propertyControl.topPropertyList!.length}');
         return  isListEmpty && !isLoading
             ? Padding(
           padding: const EdgeInsets.only(top: Dimensions.paddingSize100),
@@ -36,10 +38,11 @@ class PopularInLocationSectionSection extends StatelessWidget {
                 text: 'No Popular Properties yet',
               )),
         ) : isLoading ?
-        const RecommendedSectionShimmer(title: 'Popular In Location',) :
-        Column(crossAxisAlignment: CrossAxisAlignment.start,
+        const RecommendedSectionShimmer(title: 'Top Properties ',)
+        // const RecommendedSectionShimmer(title: 'Popular In Location',)
+            : Column(crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Popular In Location",style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault),),
+            Text("Top Properties",style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault),),
             sizedBox12(),
             SizedBox(
               height: Get.size.height * 0.28,
