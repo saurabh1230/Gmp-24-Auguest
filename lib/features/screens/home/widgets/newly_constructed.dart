@@ -45,6 +45,7 @@ class NewlyConstructedSection extends StatelessWidget {
             SizedBox(
               height: Get.size.height * 0.40,
               child: ListView.separated(
+                padding: const EdgeInsets.only(right: Dimensions.paddingSizeDefault),
                 scrollDirection: Axis.horizontal,
                 itemCount: list!.length > 6 ? 6 : list.length,
                 itemBuilder: (_,i) {

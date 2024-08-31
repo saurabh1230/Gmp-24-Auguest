@@ -3,11 +3,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/controller/profile_controller.dart';
+import 'package:get_my_properties/features/screens/Maps/location_view.dart';
+import 'package:get_my_properties/features/screens/Maps/vendor_map_view.dart';
+import 'package:get_my_properties/features/screens/dashboard/dashboard.dart';
 import 'package:get_my_properties/features/screens/dashboard/drawer.dart';
 import 'package:get_my_properties/features/widgets/custom_app_bar.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
 import 'package:get_my_properties/features/widgets/custom_buttons.dart';
 import 'package:get_my_properties/features/widgets/custom_image_widget.dart';
+import 'package:get_my_properties/features/widgets/custom_snackbar.dart';
 import 'package:get_my_properties/features/widgets/custom_textfield.dart';
 import 'package:get_my_properties/helper/route_helper.dart';
 import 'package:get_my_properties/utils/app_constants.dart';
@@ -65,6 +69,7 @@ class ProfileScreen extends StatelessWidget {
         body: GetBuilder<AuthController>(builder: (authControl) {
           return authControl.profileData == null || authControl.profileDetailsLoading ?
               const Center(child: CircularProgressIndicator()) :
+
            GetBuilder<ProfileController>(builder: (profileControl) {
             _nameController.text = authControl.profileData?.name?.toString() ?? '';
             _addressController.text = authControl.profileData?.address?.toString() ?? '';
@@ -214,6 +219,30 @@ class ProfileScreen extends StatelessWidget {
                             ],
                           ),
                           sizedBoxDefault(),
+                          authControl.profileData!.userType == "customer" ?
+                          Column(crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Address',
+                                // Adjust style as needed
+                              ),
+                              const SizedBox(height: 5 ),
+                              CustomTextField(
+                                onTap: () {
+                                  // Get.to(() => const VendorMapView());
+                                  // Get.to(LocationPickerScreen(isAddress: true,));
+                                  // Get.toNamed(RouteHelper.getLocationPickerRoute(isAddress: true));
+                                },
+                                controller: _addressController,
+                                // readOnly: true,
+                                // showTitle: true,
+                                maxLines: 4,
+                                hintText: authControl.getSaveAddress().toString().isEmpty ?
+                                '' :
+                                authControl.getSaveAddress().toString(),
+                                editText: true,),
+                            ],
+                          ):
                           CustomTextField(
                             controller: _addressController,
                             showTitle: true,
@@ -260,26 +289,26 @@ class ProfileScreen extends StatelessWidget {
                         hintText: "Password",
                         isPassword: true,),
                       sizedBoxDefault(),*/
-                          OutlinedButton(onPressed: () {
-                            // Get.toNamed(RouteHelper.getSavedRoute(isBackButton: true));
-                          }, child: Padding(
-                            padding:  const EdgeInsets.symmetric(vertical: Dimensions.paddingSize12),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("History",style: senRegular.copyWith(fontSize: Dimensions.fontSize15,color: Theme.of(context).disabledColor),),
-                                const Icon(Icons.arrow_forward)
-
-                              ],
-                            ),
-                          )),
+                          // OutlinedButton(onPressed: () {
+                          //   // Get.toNamed(RouteHelper.getSavedRoute(isBackButton: true));
+                          // }, child: Padding(
+                          //   padding:  const EdgeInsets.symmetric(vertical: Dimensions.paddingSize12),
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //     children: [
+                          //       Text("History",style: senRegular.copyWith(fontSize: Dimensions.fontSize15,color: Theme.of(context).disabledColor),),
+                          //       const Icon(Icons.arrow_forward)
+                          //
+                          //     ],
+                          //   ),
+                          // )),
                           sizedBox20(),
                           profileControl.isLoading ?
                           const CircularProgressIndicator() :
                           CustomButtonWidget(
                             buttonText: 'Save',
                             onPressed: () {
-                              if(authControl.profileData!.userType == "customer") {
+                              if(authControl.isCustomerLoggedIn()) {
                                 profileControl.updateProfile(
                                   name: _nameController.text,
                                   email: _emailController.text,
@@ -287,6 +316,10 @@ class ProfileScreen extends StatelessWidget {
                                   image: profileControl.pickedImage != null && profileControl.pickedImage!.path.isNotEmpty
                                       ? profileControl.pickedImage
                                       : null,);
+
+
+                                // Get.toNamed(RouteHelper.getDashboardRoute());
+
 
                               } else {
                                 profileControl.updateVendorProfile(
@@ -301,6 +334,7 @@ class ProfileScreen extends StatelessWidget {
 
 
                               }
+
 
                             },),
                           sizedBox20(),

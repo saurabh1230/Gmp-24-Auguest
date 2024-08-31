@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:get_my_properties/controller/auth_controller.dart';
+import 'package:get_my_properties/features/widgets/custom_snackbar.dart';
 import 'package:get_my_properties/utils/app_constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,6 +9,8 @@ import 'package:image_picker/image_picker.dart';
 import '../data/repo/profile_repo.dart';
 import '../data/api/api_client.dart';
 import 'package:http_parser/http_parser.dart';
+
+import '../features/screens/dashboard/dashboard.dart';
 class ProfileController extends GetxController implements GetxService {
   final ProfileRepo profileRepo;
   final ApiClient apiClient;
@@ -120,6 +123,10 @@ class ProfileController extends GetxController implements GetxService {
       if (response.statusCode == 200) {
         var responseBody = await response.stream.bytesToString();
         print('Response Body: $responseBody');
+        Get.find<AuthController>().profileDetailsApi();
+        showCustomSnackBar('Profile Updated Succesfully');
+        // Get.to(DashboardScreen(pageIndex: 0));
+
         return jsonDecode(responseBody);
       } else {
         var responseBody = await response.stream.bytesToString();
@@ -205,6 +212,7 @@ class ProfileController extends GetxController implements GetxService {
         print('Response Body: $responseBody');
         Get.find<AuthController>().getVendorDataApi();
         return jsonDecode(responseBody);
+
       } else {
         var responseBody = await response.stream.bytesToString();
         print('Error: ${response.reasonPhrase}');

@@ -26,8 +26,7 @@ class PopularInLocationSectionSection extends StatelessWidget {
         final list = propertyControl.topPropertyList;
         final isListEmpty = list == null || list.isEmpty;
         final isLoading = propertyControl.isPropertyLoading;
-
-        print('======> top property lenght ${propertyControl.topPropertyList!.length}');
+        print('=======>>>> top property lenght${list!.length}');
         return  isListEmpty && !isLoading
             ? Padding(
           padding: const EdgeInsets.only(top: Dimensions.paddingSize100),
@@ -45,10 +44,10 @@ class PopularInLocationSectionSection extends StatelessWidget {
             Text("Top Properties",style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault),),
             sizedBox12(),
             SizedBox(
-              height: Get.size.height * 0.28,
+              height: Get.size.height * 0.30,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
-                itemCount: list!.length > 6 ? 6 : list.length,
+                itemCount: list.length > 6 ? 6 : list.length,
                 itemBuilder: (_,i) {
                   return RecommendedItemCard(
                     image: list[i].displayImages[0].image,

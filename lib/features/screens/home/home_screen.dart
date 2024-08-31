@@ -37,6 +37,8 @@ class _HomeScreenState extends State<HomeScreen> {
       Get.find<AuthController>().profileDetailsApi();
       Get.find<AuthController>().getHomeDataApi();
       Get.find<PropertyController>().getPropertyList(page: '1',);
+      Get.find<PropertyController>().getTopPopularPropertyList(page: '1',);
+
     });
   }
   @override
@@ -61,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
               automaticallyImplyLeading: false,
               pinned: true,
               backgroundColor: Theme.of(context).primaryColor,
-              expandedHeight: 180.0,
+              expandedHeight: 190.0,
               flexibleSpace: FlexibleSpaceBar(
                 background: Container(
                   decoration: const BoxDecoration(
@@ -116,12 +118,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         Row(children: [
                            Icon(Icons.location_on_sharp,color : Theme.of(context).cardColor),
                            Expanded(child: Text(authControl.getSaveAddress().toString(),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2, overflow: TextOverflow.ellipsis,
                             style: senRegular.copyWith(fontSize: Dimensions.fontSize14,
                                 color: Theme.of(context).cardColor),)),
                         ],),
-                        // sizedBox12(),
                       ],
                     ),
                   ),
@@ -194,26 +194,26 @@ class _HomeScreenState extends State<HomeScreen> {
                   // const ServicesSection(),
                   const NewlyConstructedSection(),
                   BrowseMoreSection(
-                    title: 'Buy A House',
+                    title: 'Buy A Property',
                     description:
                     'Discover your location with the most listings, including exclusive items, and an immersive photo experience.',
                     image: Images.buyAHousePlaceHolderImage,
 
                     onTap: () {
-                      Get.toNamed(RouteHelper.getExploreRoute(isBrowser: true,title: 'Buy A House',
-                      propertyTypeId: '66b097b38e94ad0e435526f4',
-                      purposeId: '66b097948e94ad0e435526ee'));
+                      Get.toNamed(RouteHelper.getExploreRoute(isBrowser: true,title: 'Buy A Property',
+                      propertyTypeId: '',
+                      purposeId: '66b097808e94ad0e435526e6'));
                     },
                   ),
                   BrowseMoreSection(
-                    title: 'Rent A House',
+                    title: 'Rent A Property',
                     description:
                     'Creating a seamless online rental process: browse top listings, apply, and pay rent easily for a hassle-free experience.',
                     image: Images.rentAHousePlaceHolderImage,
                     onTap: () {
-                      Get.toNamed(RouteHelper.getExploreRoute(isBrowser: true,title: 'Buy A House',
-                          propertyTypeId:'66b097b38e94ad0e435526f4',
-                          purposeId: '66b097948e94ad0e435526ee'));
+                      Get.toNamed(RouteHelper.getExploreRoute(isBrowser: true,title: 'Rent A Property',
+                          propertyTypeId:'',
+                          purposeId: '66b097878e94ad0e435526ea'));
                     },
                   ),
                 ],

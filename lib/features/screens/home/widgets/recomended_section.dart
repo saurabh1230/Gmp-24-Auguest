@@ -56,7 +56,7 @@ class RecomendedSection extends StatelessWidget {
                           ),
                           sizedBox12(),
                           SizedBox(
-                            height: Get.size.height * 0.28,
+                            height: Get.size.height * 0.30,
                             child: ListView.separated(
                               scrollDirection: Axis.horizontal,
                               itemCount: list!.length > 6 ? 6 : list.length,

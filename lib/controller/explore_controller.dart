@@ -156,7 +156,7 @@ class ExploreController extends GetxController implements GetxService {
   }
 
   final RxDouble startPriceValue = 0.0.obs;
-  final RxDouble endPriceValue = 10000000.0.obs;
+  final RxDouble endPriceValue = 100000000.0.obs;
 
   void setPriceValue(RangeValues newValues) {
     startPriceValue.value = newValues.start;

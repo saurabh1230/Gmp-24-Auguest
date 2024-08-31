@@ -4,6 +4,7 @@ import 'package:get_my_properties/controller/home_controller.dart';
 import 'package:get_my_properties/features/screens/dashboard/drawer.dart';
 import 'package:get_my_properties/features/screens/dashboard/widgets/inquiry_request_section.dart';
 import 'package:get_my_properties/features/screens/explore/explore_screen.dart';
+import 'package:get_my_properties/features/screens/inquiry/all_user_inquiry.dart';
 
 import 'package:get_my_properties/features/widgets/custom_app_bar.dart';
 import 'package:get_my_properties/features/widgets/custom_buttons.dart';
@@ -65,12 +66,10 @@ class _SellerHomeState extends State<SellerHome> {
 
           final data = authControl.vendorDashboardData;
           final list = data?.latestInquiries ?? [];
-          // final isListEmpty = list.isEmpty;
           final isLoading = authControl.isLoading;
-
-
+          
           if (isLoading) {
-            return const Center(child: SellerHomeShimmer());
+            return const SellerHomeShimmer();
           }
 
           if (data == null || list.isEmpty) {
@@ -216,11 +215,11 @@ class _SellerHomeState extends State<SellerHome> {
                     itemBuilder: (_, i) {
                       final dataCounts = [
                         data.totalProperty.toString(),
-                        data.totalProperty.toString(),
-                        data.totalProperty.toString(),
-                        data.totalProperty.toString(),
-                        data.totalProperty.toString(),
-                        data.totalProperty.toString(),
+                        data.totalApproved.toString(),
+                        data.totalPending.toString(),
+                        data.totalFeatured.toString(),
+                        data.totalDisabled.toString(),
+                        data.totalRejected.toString(),
                       ];
                       return Container(
                         decoration: BoxDecoration(
@@ -267,28 +266,28 @@ class _SellerHomeState extends State<SellerHome> {
                           ),
                         ],
                       ),
-                      SizedBox(
-                        height: 200,
-                        child: SfCartesianChart(
-                          // Initialize category axis
-                            primaryXAxis: const CategoryAxis(),
-                            series: <CartesianSeries>[
-                              // Initialize line series
-                              LineSeries<ChartData, String>(
-                                  dataSource: [
-                                    // Bind data source
-                                    ChartData('Jan', 35),
-                                    ChartData('Feb', 28),
-                                    ChartData('Mar', 34),
-                                    ChartData('Apr', 32),
-                                    ChartData('May', 40)
-                                  ],
-                                  xValueMapper: (ChartData data, _) => data.x,
-                                  yValueMapper: (ChartData data, _) => data.y
-                              )
-                            ]
-                        ),
-                      ),
+                      // SizedBox(
+                      //   height: 200,
+                      //   child: SfCartesianChart(
+                      //     // Initialize category axis
+                      //       primaryXAxis: const CategoryAxis(),
+                      //       series: <CartesianSeries>[
+                      //         // Initialize line series
+                      //         LineSeries<ChartData, String>(
+                      //             dataSource: [
+                      //               // Bind data source
+                      //               ChartData('Jan', 35),
+                      //               ChartData('Feb', 28),
+                      //               ChartData('Mar', 34),
+                      //               ChartData('Apr', 32),
+                      //               ChartData('May', 40)
+                      //             ],
+                      //             xValueMapper: (ChartData data, _) => data.x,
+                      //             yValueMapper: (ChartData data, _) => data.y
+                      //         )
+                      //       ]
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
@@ -296,7 +295,7 @@ class _SellerHomeState extends State<SellerHome> {
                 InquiryRequestSection(
                   inquiries: data.latestInquiries,
                   onSeeAll: () {
-                    Get.toNamed(RouteHelper.getEnquiryRoute());
+                    Get.to(const AllUserInquiry(isBackButtonExist: true,));
                   },
                 ),
                 sizedBox40(),

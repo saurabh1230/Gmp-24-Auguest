@@ -29,7 +29,8 @@ class _EmiCalculatorState extends State<EmiCalculator> {
       padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault,horizontal: Dimensions.paddingSizeDefault),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Center(child: Text("Calculate EMI",style:  senBold.copyWith(fontSize: Dimensions.fontSizeDefault,),)),
+
+          Text("Calculate EMI",style:  senBold.copyWith(fontSize: Dimensions.fontSizeDefault,),),
           sizedBox10(),
 
           Text('Down Payment: ₹${loanAmount.toStringAsFixed(0)}'),

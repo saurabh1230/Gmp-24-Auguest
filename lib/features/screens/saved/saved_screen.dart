@@ -77,7 +77,7 @@ class _SavedScreenState extends State<SavedScreen> {
       return   isListEmpty && !isLoading
           ? Center(
           child: EmptyDataWidget(
-            image: Images.emptyDataImage,
+            image: Images.icSearchPlaceHolder,
             fontColor: Theme.of(context).disabledColor,
             text: 'No Saved yet',
           )) : Column(

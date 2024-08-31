@@ -2,16 +2,22 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_my_properties/controller/auth_controller.dart';
+import 'package:get_my_properties/controller/location_controller.dart';
+import 'package:get_my_properties/data/models/body/vendor_locality.dart';
 import 'package:get_my_properties/data/models/response/property_detail_model.dart';
 import 'package:get_my_properties/data/models/response/property_model.dart';
 import 'package:get_my_properties/data/models/response/recent_search_model.dart';
-import 'package:get_my_properties/data/models/response/search_property_model.dart';
+import 'package:get_my_properties/data/models/response/vendor_property_model.dart';
 import 'package:get_my_properties/data/repo/property_repo.dart';
+import 'package:get_my_properties/features/screens/dashboard/seller_dashboard.dart';
+import 'package:get_my_properties/features/widgets/custom_snackbar.dart';
 import 'package:get_my_properties/utils/app_constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 
 class PropertyController extends GetxController implements GetxService {
   final PropertyRepo propertyRepo;
@@ -77,13 +83,13 @@ class PropertyController extends GetxController implements GetxService {
   List<PropertyModel>? _propertyList;
   List<PropertyModel>? get propertyList => _propertyList;
 
-  List<PropertyModel>? _topPropertyList;
-  List<PropertyModel>? get topPropertyList => _topPropertyList;
+  // List<PropertyModel>? _topPropertyList;
+  // List<PropertyModel>? get topPropertyList => _topPropertyList;
+  //
+  // List<PropertyModel>? _featuredPropertyList;
+  // List<PropertyModel>? get featuredPropertyList => _featuredPropertyList;
 
-  List<PropertyModel>? _featuredPropertyList;
-  List<PropertyModel>? get featuredPropertyList => _featuredPropertyList;
-
-
+  List<LatLng> markerCoordinates = [];
   Future<void> getPropertyList({
     String? page,
     String? stateId,
@@ -126,7 +132,7 @@ class PropertyController extends GetxController implements GetxService {
           amenityId: amenityId,
           typeId: typeId,
           page: page,
-          limit: limit,
+          limit: '20',
           userId: userId,
           minPrice: minPrice,
           maxPrice: maxPrice,
@@ -149,17 +155,23 @@ class PropertyController extends GetxController implements GetxService {
             _propertyList!.addAll(newDataList);
           }
 
-          List<PropertyModel> topProperties = newDataList.where((property) => property.topProperty == true).toList();
-          if (topProperties.isNotEmpty) {
-            _topPropertyList!.addAll(topProperties);
-          }
+          // List<PropertyModel> topProperties = newDataList.where((property) => property.topProperty == true).toList();
+          // if (topProperties.isNotEmpty) {
+          //   _topPropertyList!.addAll(topProperties);
+          // }
+          //
+          // List<PropertyModel> featuredProperties = newDataList.where((property) => property.isFeatured == true).toList();
+          // if (topProperties.isNotEmpty) {
+          //   _featuredPropertyList!.addAll(featuredProperties);
+          // }
 
-          List<PropertyModel> featuredProperties = newDataList.where((property) => property.isFeatured == true).toList();
-          if (topProperties.isNotEmpty) {
-            _featuredPropertyList!.addAll(featuredProperties);
-          }
+          markerCoordinates = newDataList.map((property) {
+            double latitude =  property.latitude ?? 0;
+            double longitude = property.longitude ?? 0;
 
-
+            return LatLng(latitude, longitude);
+          }).toList();
+            print(' ============>>${markerCoordinates.length}');
           _isPropertyLoading = false;
           update();
         } else {
@@ -204,6 +216,10 @@ class PropertyController extends GetxController implements GetxService {
 
   /// ######  VENDOR  ##########////
 ///
+
+  List<VendorPropertyModel>? _verderPropertyList;
+  List<VendorPropertyModel>? get verdorPropertyList => _verderPropertyList;
+
   Future<void> getVendorPropertyList({
     String? page,
     String? status,
@@ -214,25 +230,21 @@ class PropertyController extends GetxController implements GetxService {
       if (page == '1') {
         _pageList = []; // Reset page list for new search
         _offset = 1;
-        _propertyList = []; // Reset product list for the first page
+        _verderPropertyList = []; // Reset product list for the first page
         update();
       }
 
       if (!_pageList.contains(page)) {
         _pageList.add(page!);
-
-        Response response = await propertyRepo.getVendorProperty(status
-
-        );
-
+        Response response = await propertyRepo.getVendorProperty(status);
         if (response.statusCode == 200) {
           List<dynamic> dataList = response.body['data'];
-          List<PropertyModel> newDataList = dataList.map((json) => PropertyModel.fromJson(json)).toList();
+          List<VendorPropertyModel> newDataList = dataList.map((json) => VendorPropertyModel.fromJson(json)).toList();
 
           if (page == '1') {
-            _propertyList = newDataList;
+            _verderPropertyList = newDataList;
           } else {
-            _propertyList!.addAll(newDataList);
+            _verderPropertyList!.addAll(newDataList);
           }
 
           _isPropertyLoading = false;
@@ -282,7 +294,8 @@ class PropertyController extends GetxController implements GetxService {
     required String expiryDate,
     required String stateId,
     required String cityId,
-    required String localityId,
+    required List<LocalityMapData> localityId,
+    // required String localityId,
     required String latitude,
     required String longitude,
     required XFile? displayImage,
@@ -340,7 +353,8 @@ class PropertyController extends GetxController implements GetxService {
       "expiry_date": expiryDate,
       "state_id": stateId,
       "city_id": cityId,
-      "locality_id": jsonEncode(["66b09b8fc7068370892553c0", "66b09b9bc7068370892553c3"]),
+      // "locality_id": localityId,
+      // "locality_id": jsonEncode(["66b09b8fc7068370892553c0", "66b09b9bc7068370892553c3"]),
       "latitude": latitude,
       "longitude": longitude,
     });
@@ -383,6 +397,8 @@ class PropertyController extends GetxController implements GetxService {
 
       var responseBody = await response.stream.bytesToString();
       print('Raw Response Body: $responseBody'); // Print raw response for debugging
+      showCustomSnackBar('Property Created Successfully You will notify when Admin Approved your listing');
+
 
       // Try to decode response as JSON
       try {
@@ -396,19 +412,25 @@ class PropertyController extends GetxController implements GetxService {
       print('Exception: $e');
       return false;
     } finally {
+      // Get.to(() => SellerDashboardScreen(pageIndex: 0));
+      Get.find<AuthController>().getHomeDataApi();
+      Get.find<LocationController>().getCountryList();
+      Get.find<LocationController>().getStateList();
+      Get.find<LocationController>().getCityList('66b356ec18a20385edf487a7');
+      Get.find<LocationController>().getLocalityList();
       _isLoading = false;
       update();
     }
   }
 
   //
-  List<PropertyModel>? _searchPropertyList;
-  List<PropertyModel>? get searchPropertyList => _searchPropertyList;
+  // List<PropertyModel>? _searchPropertyList;
+  // List<PropertyModel>? get searchPropertyList => _searchPropertyList;
   // List<SearchPropertyModel>? _searchPropertyList;
   // List<SearchPropertyModel>? get searchPropertyList => _searchPropertyList;
 
   Future<void> clearSearchPropertyList() async {
-    _searchPropertyList = [];
+    _propertyList = [];
     update();
   }
   Future<void> getSearchPropertyList({
@@ -419,35 +441,35 @@ class PropertyController extends GetxController implements GetxService {
     String? query,
     String? purposeId,
 
+
+
   }) async {
     _isPropertyLoading = true;
     try {
       if (page == '1') {
-        _pageList = []; // Reset page list for new search
+        _pageList = [];
         _offset = 1;
-        _searchPropertyList = []; // Reset product list for the first page
+        _propertyList = [];
         update();
       }
-      if (!_pageList.contains(page)) {
-        _pageList.add(page!);
-
+      if (!_pageList.contains(page)) {_pageList.add(page!);
         Response response = await propertyRepo.userSearchPropertyRepo(
-            page, limit, latitude, longitude, query,purposeId);
-
+            page, limit, latitude, longitude, query,purposeId,
+            Get.find<AuthController>().profileData!.sId.toString());
         if (response.statusCode == 200) {
           List<dynamic> dataList = response.body['data'];
           List<PropertyModel> newDataList = dataList.map((json) => PropertyModel.fromJson(json)).toList();
 
           if (page == '1') {
-            _searchPropertyList = newDataList;
+            _propertyList = newDataList;
           } else {
-            _searchPropertyList!.addAll(newDataList);
+            _propertyList!.addAll(newDataList);
           }
 
           _isPropertyLoading = false;
           update();
         } else {
-          // Handle the error appropriatelyF
+          // Handle the error appropriately
         }
       } else {
         if (_isPropertyLoading) {
@@ -483,14 +505,128 @@ class PropertyController extends GetxController implements GetxService {
     update();
   }
 
+  Future<void> deleteVenderProperty(propertyId,String? propertyStatus) async {
+    _isLoading = true;
+    update();
+    try {
+      Response response = await propertyRepo.vendorDeletePropertyRepo(propertyId);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseData = response.body;
+        if (responseData['status'] == true) {
+          showCustomSnackBar(responseData['message']);
+
+        }
+      } else {
+        // Handle error if status code is not 200
+        showCustomSnackBar("Error in deleting property", isError: true);
+      }
+    } catch (error) {
+      print("Error while deleting property: $error");
+      showCustomSnackBar("An error occurred", isError: true);
+    }
+    getVendorPropertyList(page: '1', status: propertyStatus);
+
+
+    _isLoading = false;
+    update();
+  }
 
 
 
+  // top and popular property //
+
+  List<PropertyModel>? _topPropertyList;
+  List<PropertyModel>? get topPropertyList => _topPropertyList;
+
+  List<PropertyModel>? _featuredPropertyList;
+  List<PropertyModel>? get featuredPropertyList => _featuredPropertyList;
+
+
+  Future<void> getTopPopularPropertyList({
+    String? page,
+    String? stateId,
+    String? cityId,
+    String? localityId,
+    String? purposeId,
+    String? categoryId,
+    String? amenityId,
+    String? typeId,
+    String? limit,
+    String? userId,
+    String? minPrice,
+    String? maxPrice,
+    String? sortBy,
+    String? lat,
+    String? long,
+    String? direction,
+    String? bathroom,
+    String? space,
+  }) async {
+    _isPropertyLoading = true;
+    try {
+      if (page == '1') {
+        _pageList = []; // Reset page list for new search
+        _offset = 1;
+        _propertyList = []; // Reset product list for the first page
+        _topPropertyList = [];
+        _featuredPropertyList = [];
+        update();
+      }
+      if (!_pageList.contains(page)) {
+        _pageList.add(page!);
+
+        Response response = await propertyRepo.getUserProperty(
+          stateId: stateId,
+          cityId: cityId,
+          localityId: localityId,
+          purposeId: purposeId,
+          categoryId: categoryId,
+          amenityId: amenityId,
+          typeId: typeId,
+          page: page,
+          limit: '20',
+          userId: userId,
+          minPrice: minPrice,
+          maxPrice: maxPrice,
+          sortBy: sortBy,
+          lat: lat,
+          long: long,
+          direction: direction,
+          bathroom: bathroom,
+          space: space,
+        );
+
+        if (response.statusCode == 200) {
+          List<dynamic> dataList = response.body['data'];
+          List<PropertyModel> newDataList = dataList.map((json) => PropertyModel.fromJson(json)).toList();
 
 
 
+          List<PropertyModel> topProperties = newDataList.where((property) => property.topProperty == true).toList();
+          if (topProperties.isNotEmpty) {
+            _topPropertyList!.addAll(topProperties);
+          }
 
+          List<PropertyModel> featuredProperties = newDataList.where((property) => property.isFeatured == true).toList();
+          if (topProperties.isNotEmpty) {
+            _featuredPropertyList!.addAll(featuredProperties);
+          }
 
+          _isPropertyLoading = false;
+          update();
+        } else {
 
-
+        }
+      } else {
+        if (_isPropertyLoading) {
+          _isPropertyLoading = false;
+          update();
+        }
+      }
+    } catch (e) {
+      print('Error fetching property list: $e');
+      _isPropertyLoading = false;
+      update();
+    }
+  }
 }

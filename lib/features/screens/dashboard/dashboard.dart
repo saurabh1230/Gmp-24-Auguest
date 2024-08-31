@@ -46,7 +46,7 @@ class DashboardScreenState extends State<DashboardScreen> {
 
     _screens = [
        const HomeScreen(),
-       const ExploreScreen(),
+       const ExploreScreen(purposeId: '',),
         SearchScreen(isBackButton: false,),
        const SavedScreen(),
        ProfileScreen(),
@@ -74,6 +74,7 @@ class DashboardScreenState extends State<DashboardScreen> {
       child: WillPopScope(
         onWillPop: Get.find<AuthController>().handleOnWillPop,
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           floatingActionButton: !GetPlatform.isMobile ? null : FloatingActionButton(
             elevation: 5,
             backgroundColor: _pageIndex == 2 ? Theme.of(context).primaryColor : Theme.of(context).cardColor,

@@ -1,7 +1,11 @@
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/controller/bookmark_controller.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
+import 'package:get_my_properties/features/screens/Maps/properties_map.dart';
+import 'package:get_my_properties/features/screens/Maps/properties_map.dart';
 import 'package:get_my_properties/features/screens/dashboard/drawer.dart';
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
 import 'package:get_my_properties/features/screens/home/widgets/filter_bottom_sheet.dart';
@@ -35,7 +39,22 @@ class ExploreScreen extends StatefulWidget {
   _ExploreScreenState createState() => _ExploreScreenState();
 }
 
+
 class _ExploreScreenState extends State<ExploreScreen> {
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if(widget.isBrowser == true) {
+        Get.find<PropertyController>().getPropertyList(page: '1',typeId:widget.propertyTypeId,
+            purposeId: widget.purposeId );
+      } else {
+        print('check');
+        Get.find<PropertyController>().getPropertyList(page: '1',);
+      }
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,6 +81,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 children: [
                   Expanded(child: CustomOutlineButton(title: 'Location',
                     tap: () {
+                      Get.to(() =>  PropertiesMapScreen(
+                        purposeId: widget.purposeId!,
+                        propertyTypeId: widget.propertyTypeId!,));
                     },)),
                   sizedBoxW5(),
                   Expanded(child: CustomOutlineButton(
@@ -89,16 +111,17 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 ],
               ),
             ),
-            isListEmpty && !isLoading
-                ? Center(
+             Expanded(
+                  child: isListEmpty && !isLoading
+                      ? Center(
                     child: EmptyDataWidget(
-                      image: Images.emptyDataImage,
+                      image: Images.icSearchPlaceHolder,
                       fontColor: Theme.of(context).disabledColor,
-                      text: 'No Properties yet',
+                      text: 'No Properties Found',
                     ),
                   )
-                : Expanded(
-                  child: isLoading || isListEmpty
+                      :
+                  isLoading || isListEmpty
                       ? const ExploreScreenShimmer()
                       : SingleChildScrollView(
                           child: ListView.separated(

@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/data/models/response/property_model.dart';
+import 'package:get_my_properties/features/screens/dashboard/seller_dashboard.dart';
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
 import 'package:get_my_properties/features/screens/property/prperties_details_screen.dart';
 import 'package:get_my_properties/features/widgets/custom_buttons.dart';
+import 'package:get_my_properties/features/widgets/custom_confirmation_dialog.dart';
 import 'package:get_my_properties/features/widgets/custom_image_widget.dart';
 import 'package:get_my_properties/helper/route_helper.dart';
 import 'package:get_my_properties/utils/app_constants.dart';
@@ -28,6 +30,7 @@ class RecommendedItemCard extends StatelessWidget {
   final bool? isVendor;
   final Color? bookmarkIconColor;
   final PropertyModel? propertyModel;
+  final Function()? vendorDeleteTap;
 
   const RecommendedItemCard({
     super.key,
@@ -39,7 +42,7 @@ class RecommendedItemCard extends StatelessWidget {
     required this.propertyId,
     this.ratingText,
     this.likeTap,
-    this.isLikeButton = true, this.isVendor = false, this.bookmarkIconColor, this.propertyModel, required this.markerPrice,
+    this.isLikeButton = true, this.isVendor = false, this.bookmarkIconColor, this.propertyModel, required this.markerPrice, this.vendorDeleteTap,
   });
 
   @override
@@ -50,6 +53,8 @@ class RecommendedItemCard extends StatelessWidget {
           onTap: () {
             if(isVendor!) {
               print('isVendor');
+              vendorDeleteTap!();
+
             } else {
               Get.toNamed(
                 RouteHelper.getPropertiesDetailsScreen(
@@ -136,24 +141,57 @@ class RecommendedItemCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   if (ratingText != null) // Check if ratingText is not null
+
+                    isVendor! ?
                     CustomDecoratedContainer(
                       child: Row(
                         children: [
-                          Text(
-                            ratingText!,
-                            style: senRegular.copyWith(
-                              fontSize: Dimensions.fontSize12,
-                              color: Theme.of(context).hintColor,
-                            ),
-                          ),
-                          Icon(
-                            Icons.star,
-                            color: Theme.of(context).hintColor,
-                            size: Dimensions.fontSize15,
-                          ),
+                          IconButton(onPressed: () {
+                            vendorDeleteTap!();
+                          }, icon: Icon(Icons.delete,color: Theme.of(context).cardColor,))
+                          // IconButton(onPressed: () {
+                          //   Get.to(SellerDashboardScreen(pageIndex: 2));
+                          // }, icon: Icon(Icons.edit,color: Theme.of(context).primaryColor,))
+                          // Text(
+                          //   ratingText!,
+                          //   style: senRegular.copyWith(
+                          //     fontSize: Dimensions.fontSize12,
+                          //     color: Theme.of(context).hintColor,
+                          //   ),
+                          // ),
+                          // Icon(
+                          //   Icons.star,
+                          //   color: Theme.of(context).hintColor,
+                          //   size: Dimensions.fontSize15,
+                          // ),
                         ],
                       ),
-                    ),
+                    ): const SizedBox(),
+                    // const SizedBox(),
+                    // CustomDecoratedContainer(
+                    //   child: Row(
+                    //     children: [
+                    //       IconButton(onPressed: () {
+                    //         vendorDeleteTap!();
+                    //       }, icon: Icon(Icons.delete,color: Theme.of(context).cardColor,))
+                    //       // IconButton(onPressed: () {
+                    //       //   Get.to(SellerDashboardScreen(pageIndex: 2));
+                    //       // }, icon: Icon(Icons.edit,color: Theme.of(context).primaryColor,))
+                    //       // Text(
+                    //       //   ratingText!,
+                    //       //   style: senRegular.copyWith(
+                    //       //     fontSize: Dimensions.fontSize12,
+                    //       //     color: Theme.of(context).hintColor,
+                    //       //   ),
+                    //       // ),
+                    //       // Icon(
+                    //       //   Icons.star,
+                    //       //   color: Theme.of(context).hintColor,
+                    //       //   size: Dimensions.fontSize15,
+                    //       // ),
+                    //     ],
+                    //   ),
+                    // ),
                   if (isLikeButton == true && likeTap != null) // Check if isLikeButton is true and likeTap is not null
                     CustomNotificationButton(
                       color: bookmarkIconColor,

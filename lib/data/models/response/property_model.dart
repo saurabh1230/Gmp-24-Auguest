@@ -39,6 +39,8 @@ class PropertyModel {
   final City city;
   // final List<dynamic> locality;
   final List<AllImage> allImages;
+  final double latitude;
+  final double longitude;
 
   PropertyModel({
     required this.id,
@@ -79,6 +81,8 @@ class PropertyModel {
     required this.city,
     // required this.locality,
     required this.allImages,
+    required this.latitude,
+    required this.longitude,
   });
 
   factory PropertyModel.fromJson(Map<String, dynamic> json) => PropertyModel(
@@ -120,6 +124,9 @@ class PropertyModel {
     city: City.fromJson(json['city']),
     // locality: List<dynamic>.from(json['locality']),
     allImages: List<AllImage>.from(json['all_images'].map((x) => AllImage.fromJson(x))),
+    latitude: json['latitude'],
+    longitude: json['longitude'],
+
   );
 
   Map<String, dynamic> toJson() => {
@@ -161,6 +168,8 @@ class PropertyModel {
     'city': city.toJson(),
     // 'locality': List<dynamic>.from(locality),
     'all_images': List<dynamic>.from(allImages.map((x) => x.toJson())),
+    'latitude': latitude,
+    'longitude': longitude,
   };
 }
 

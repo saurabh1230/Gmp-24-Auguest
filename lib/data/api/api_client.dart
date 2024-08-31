@@ -66,6 +66,31 @@ class ApiClient extends GetxService {
 
       http.Response response;
 
+      // switch (method.toUpperCase()) {
+      //   case 'GET':
+      //     response = await http.get(uriWithQuery, headers: headers ?? _mainHeaders)
+      //         .timeout(Duration(seconds: timeoutInSeconds));
+      //     break;
+      //   case 'POST':
+      //     response = await http.post(uriWithQuery, headers: headers ?? _mainHeaders, body: body)
+      //         .timeout(Duration(seconds: timeoutInSeconds));
+      //     break;
+      //   case 'PUT':
+      //     response = await http.put(uriWithQuery, headers: headers ?? _mainHeaders, body: body)
+      //         .timeout(Duration(seconds: timeoutInSeconds));
+      //     break;
+      //   case 'DELETE':
+      //     response = await http.delete(uriWithQuery, headers: headers ?? _mainHeaders)
+      //         .timeout(Duration(seconds: timeoutInSeconds));
+      //     break;
+      //   case 'PATCH':
+      //     response = await http.patch(uriWithQuery, headers: headers ?? _mainHeaders, body: body)
+      //         .timeout(Duration(seconds: timeoutInSeconds));
+      //     break;
+      //   default:
+      //     throw UnsupportedError('HTTP method not supported');
+      // }
+
       switch (method.toUpperCase()) {
         case 'GET':
           response = await http.get(uriWithQuery, headers: headers ?? _mainHeaders)

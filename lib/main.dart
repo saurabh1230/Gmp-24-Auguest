@@ -1,16 +1,40 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_my_properties/features/screens/test_widget.dart';
 import 'package:get_my_properties/helper/route_helper.dart';
 import 'package:get_my_properties/utils/app_constants.dart';
 import 'package:get_my_properties/utils/theme/light_theme.dart';
 import 'helper/gi_dart.dart' as di;
+import 'package:location/location.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
+
+  Location location = new Location();
+  bool _serviceEnabled;
+
+  try {
+    // Request location permission
+    final permissionStatus = await Permission.location.request();
+    if (!permissionStatus.isGranted) {
+      debugPrint('Location permission denied');
+      return;
+    }
+
+    // Check if the location service is enabled
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        debugPrint('Location Service not enabled');
+      }
+    }
+  } catch (e) {
+    debugPrint('Error checking location service: $e');
+  }
+
   await di.init();
   runApp(const MyApp());
 }

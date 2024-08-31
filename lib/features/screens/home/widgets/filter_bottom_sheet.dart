@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/controller/explore_controller.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
+import 'package:get_my_properties/features/screens/search/search_property_screen.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
 import 'package:get_my_properties/features/widgets/custom_buttons.dart';
 import 'package:get_my_properties/features/widgets/custom_dropdown_button.dart';
@@ -14,15 +15,13 @@ import 'package:get/get.dart';
 import 'package:get_my_properties/utils/theme/price_converter.dart';
 
 class FilterBottomSheet extends StatelessWidget {
-  const FilterBottomSheet({super.key});
+  final bool? searchNavigation;
+  const FilterBottomSheet({super.key, this.searchNavigation = false, });
 
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.find<AuthController>().getHomeDataApi();
-      // Get.find<PropertyController>().getPropertyList(page: '1',
-      //
-      // );
     });
 
     return Container(
@@ -95,19 +94,21 @@ class FilterBottomSheet extends StatelessWidget {
                                   authControl.homeData!.propertyPurposes!.length,
                                       (index) {
                                     final val = authControl.homeData!.propertyPurposes![index];
+                                    final isSelected = authControl.propertyPurposeID == val.sId.toString();
                                     return CustomSelectedButton(
                                       tap: () {
-                                        // Set the selected ID or clear it if the same button is clicked
-                                        final newValue = authControl.propertyPurposeID == val.sId.toString() ? '' : val.sId.toString();
+                                        // Toggle the selection based on whether it is currently selected
+                                        final newValue = isSelected ? '' : val.sId.toString();
                                         authControl.selectPropertyPurposeId(newValue);
                                         print(authControl.propertyPurposeID);
                                       },
                                       title: val.name.toString().contains("Sale") ? "Buy" : val.name.toString(),
-                                      isSelected: authControl.propertyPurposeID == val.sId.toString(), // Highlight if selected
+                                      isSelected: isSelected, // Highlight if selected
                                     );
                                   },
                                 ),
                               ),
+
 
 
                               sizedBox20(),
@@ -266,7 +267,7 @@ class FilterBottomSheet extends StatelessWidget {
                                 width: double.infinity,
                                 child: Obx(() => RangeSlider(
                                   min: 0.0, // Minimum value
-                                  max: 10000000.0, // Maximum value (1 crore)
+                                  max: 100000000.0, // Maximum value (1 crore)
                                   divisions: 100, // Number of divisions for finer granularity
                                   labels: RangeLabels(
                                     controller.formatCurrency(controller.startPriceValue.value),
@@ -282,68 +283,6 @@ class FilterBottomSheet extends StatelessWidget {
                                   },
                                 )),
                               ),
-                              // Text(
-                              //   "State",
-                              //   style: senRegular.copyWith(
-                              //       fontSize: Dimensions.fontSize15),
-                              // ),
-                              // sizedBox10(),
-                              // CustomDropdownButtonFormField<String>(
-                              //   value: authControl.homeData!.nearbyState!.isNotEmpty
-                              //       ? authControl.homeData!.nearbyState!
-                              //       .firstWhere(
-                              //         (religion) => religion.sId == controller.stateId,
-                              //     orElse: () => authControl.homeData!.nearbyState!.first,
-                              //   )
-                              //       .name
-                              //       : null, // Handle empty list scenario
-                              //   items: authControl.homeData!.nearbyState!
-                              //       .map((position) => position.name!)
-                              //       .toList(),
-                              //   hintText: "Select State",
-                              //   onChanged: (String? value) {
-                              //     if (value != null) {
-                              //       var selected = authControl.homeData!.nearbyState!.firstWhere(
-                              //             (position) => position.name == value,
-                              //         orElse: () => authControl.homeData!.nearbyState!.first,
-                              //       );
-                              //       controller.setStateId(selected.sId!);
-                              //       print(controller.stateId);
-                              //     }
-                              //   },
-                              // ),
-                              // sizedBox20(),
-                              // Text(
-                              //   "Near By Location",
-                              //   style: senRegular.copyWith(
-                              //       fontSize: Dimensions.fontSize15),
-                              // ),
-                              // sizedBox10(),
-                              // CustomDropdownButtonFormField<String>(
-                              //   value: authControl.homeData!.nearbyLocations!.isNotEmpty
-                              //       ? authControl.homeData!.nearbyLocations!
-                              //       .firstWhere(
-                              //         (religion) => religion.sId == controller.nearByLocationId,
-                              //     orElse: () => authControl.homeData!.nearbyLocations!.first,
-                              //   )
-                              //       .name
-                              //       : null, // Handle empty list scenario
-                              //   items: authControl.homeData!.nearbyLocations!
-                              //       .map((position) => position.name!)
-                              //       .toList(),
-                              //   hintText: "Select Location",
-                              //   onChanged: (String? value) {
-                              //     if (value != null) {
-                              //       var selected = authControl.homeData!.nearbyLocations!.firstWhere(
-                              //             (position) => position.name == value,
-                              //         orElse: () => authControl.homeData!.nearbyLocations!.first,
-                              //       );
-                              //       controller.setNearByLocationId(selected.sId!);
-                              //       print(controller.nearByLocationId);
-                              //     }
-                              //   },
-                              // ),
-                              // sizedBox20(),
                               Text(
                                 "Properties Amenities",
                                 style: senRegular.copyWith(
@@ -369,215 +308,7 @@ class FilterBottomSheet extends StatelessWidget {
                                   },
                                 ),
                               ),
-
-
-                              // CustomDropdownButtonFormField<String>(
-                              //   value: authControl.homeData!.propertyAmenities!.isNotEmpty
-                              //       ? authControl.homeData!.propertyAmenities!
-                              //       .firstWhere(
-                              //         (religion) => religion.sId == authControl.amenityId,
-                              //     orElse: () => authControl.homeData!.propertyAmenities!.first,
-                              //   )
-                              //       .name
-                              //       : null, // Handle empty list scenario
-                              //   items: authControl.homeData!.propertyAmenities!
-                              //       .map((position) => position.name!)
-                              //       .toList(),
-                              //   hintText: "Select Properties Amenities",
-                              //   onChanged: (String? value) {
-                              //     if (value != null) {
-                              //       var selected = authControl.homeData!.propertyAmenities!.firstWhere(
-                              //             (position) => position.name == value,
-                              //         orElse: () => authControl.homeData!.propertyAmenities!.first,
-                              //       );
-                              //       authControl.setAmenityId(selected.sId!);
-                              //       print(authControl.amenityId);
-                              //     }
-                              //   },
-                              // ),
                               sizedBox20(),
-                              Text(
-                                "Property Category",
-                                style: senRegular.copyWith(
-                                    fontSize: Dimensions.fontSize15),
-                              ),
-                              sizedBox10(),
-                              Wrap(
-                                spacing: 8.0, // Space between chips
-                                runSpacing: 8.0, // Space between lines of chips
-                                children: List.generate(
-                                  authControl.homeData!.propertyCategory!.length,
-                                      (index) {
-                                    final val = authControl.homeData!.propertyCategory![index];
-                                    final isSelected = authControl.propertyCategoryId == val.sId.toString();
-                                    return CustomSelectedButton(
-                                      tap: () {
-                                        authControl.selectPropertyCategoryId(val.sId.toString());
-                                        print(authControl.propertyCategoryId);
-                                      },
-                                      title: val.name.toString(),
-                                      isSelected: isSelected,
-                                    );
-                                  },
-                                ),
-                              ),
-                              sizedBox20(),
-
-                              // Obx(() => FilterScreenField(
-                              //   tap: () {
-                              //     Get.dialog(
-                              //       Obx(() => CustomDialogCheckBox(
-                              //         itemList: authControl.homeData!.propertyCategory!
-                              //             .map((community) => community.name!)
-                              //             .toList(),
-                              //         selectedItems: controller.propertyCategoryName.toList(),
-                              //         onItemSelected: (String selectedItem) {
-                              //           final category = authControl.homeData!.propertyCategory!
-                              //               .firstWhere((community) => community.name == selectedItem);
-                              //           final categoryId = category.sId!;
-                              //
-                              //           if (controller.propertyCategoryName.contains(selectedItem)) {
-                              //             controller.setPropertyCategoryIds(categoryId);
-                              //             controller.setPropertyCategoryName(selectedItem);
-                              //
-                              //           } else {
-                              //             controller.setPropertyCategoryIds(categoryId);
-                              //             controller.setPropertyCategoryName(selectedItem);
-                              //           }
-                              //           print('Selected IDs: ${controller.propertyCategoryIds.join(', ')}');
-                              //           print('Selected Names: ${controller.propertyCategoryName}');
-                              //         },
-                              //         dialogTitle: 'Select Property Category',
-                              //       )),
-                              //     );
-                              //   },
-                              //   title: 'Amenity',
-                              //   data:controller.propertyCategoryName.isEmpty? 'Select Category' :  controller.propertyCategoryName.join(', '), // Show selected names
-                              // )),
-
-
-
-
-                              /* sizedBox20(),
-                                      Text(
-                                        'Budget',
-                                        style: senRegular.copyWith(
-                                          fontSize: Dimensions.fontSize15,
-                                        ),
-                                      ),
-                                      sizedBox10(),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: Column(
-                                              children: [
-                                                CustomDropdownWidget(
-                                                  title: "Min",
-                                                  style: senRegular.copyWith(
-                                                      fontSize:
-                                                          Dimensions.fontSize15,
-                                                      color: Theme.of(context)
-                                                          .disabledColor
-                                                          .withOpacity(0.40)),
-                                                  itemList:
-                                                      controller.budgetTypeList,
-                                                  selectedValue:
-                                                      controller.budgetTypeMin,
-                                                  onChanged: (int? value) {
-                                                    if (value != null) {
-                                                      controller
-                                                          .selectBudgetTypeMin(
-                                                              value);
-                                                    }
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          sizedBoxW10(),
-                                          Expanded(
-                                            child: CustomDropdownWidget(
-                                              title: "Max",
-                                              style: senRegular.copyWith(
-                                                  fontSize:
-                                                      Dimensions.fontSize15,
-                                                  color: Theme.of(context)
-                                                      .disabledColor
-                                                      .withOpacity(0.40)),
-                                              itemList:
-                                                  controller.budgetTypeList,
-                                              selectedValue:
-                                                  controller.budgetTypeMax,
-                                              onChanged: (int? value) {
-                                                if (value != null) {
-                                                  controller
-                                                      .selectBudgetTypeMax(
-                                                          value);
-                                                }
-                                              },
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      sizedBox20(),
-                                      Text(
-                                        'Square Feet (Area Measure)',
-                                        style: senRegular.copyWith(
-                                          fontSize: Dimensions.fontSize15,
-                                        ),
-                                      ),
-                                      sizedBox10(),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: Column(
-                                              children: [
-                                                CustomDropdownWidget(
-                                                  title: "Min",
-                                                  style: senRegular.copyWith(
-                                                      fontSize:
-                                                          Dimensions.fontSize15,
-                                                      color: Theme.of(context)
-                                                          .disabledColor
-                                                          .withOpacity(0.40)),
-                                                  itemList:
-                                                      controller.budgetTypeList,
-                                                  selectedValue:
-                                                      controller.sqftMin,
-                                                  onChanged: (int? value) {
-                                                    if (value != null) {
-                                                      controller
-                                                          .selectsqFtMin(value);
-                                                    }
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          sizedBoxW10(),
-                                          Expanded(
-                                            child: CustomDropdownWidget(
-                                              title: "Max",
-                                              style: senRegular.copyWith(
-                                                  fontSize:
-                                                      Dimensions.fontSize15,
-                                                  color: Theme.of(context)
-                                                      .disabledColor
-                                                      .withOpacity(0.40)),
-                                              itemList:
-                                                  controller.budgetTypeList,
-                                              selectedValue:
-                                                  controller.sqFitMax,
-                                              onChanged: (int? value) {
-                                                if (value != null) {
-                                                  controller
-                                                      .selectsqFtMax(value);
-                                                }
-                                              },
-                                            ),
-                                          ),
-                                        ],
-                                      ),*/
                               sizedBox20(),
                               Row(
                                 children: [
@@ -628,10 +359,19 @@ class FilterBottomSheet extends StatelessWidget {
                                           maxPrice: controller.formatPrice(controller.endPriceValue.toDouble()),
                                           space: controller.spaceTypeIDs.join(','),
                                           bathroom: controller.bathroomIDs.join(','),
-                                          categoryId:  controller.propertyCategoryIds.join(', '),
+                                          // categoryId:  controller.propertyCategoryIds.join(', '),
                                           amenityId: authControl.amenityIds.join(','),
                                         );
-                                        Get.back();
+
+                                        if (searchNavigation == true) {
+                                          Get.to(() => SearchPropertyScreen(searchText: '', purposeId: '',));
+
+
+                                        } else {
+                                          Get.back();
+
+                                        }
+
                                       },
                                     ),
                                   )

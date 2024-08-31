@@ -12,6 +12,8 @@ import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import 'package:google_places_flutter/google_places_flutter.dart';
+
 class LocationController extends GetxController implements GetxService {
   final LocationRepo locationRepo;
 
@@ -307,6 +309,7 @@ class LocationController extends GetxController implements GetxService {
   }
 
 
+
   void onMapCreated(GoogleMapController controller) {
     mapController = controller;
     update();
@@ -318,6 +321,7 @@ class LocationController extends GetxController implements GetxService {
       );
     }
   }
+
 
 
 

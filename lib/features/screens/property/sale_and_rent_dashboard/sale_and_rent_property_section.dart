@@ -20,7 +20,8 @@ class SaleAndRentPropertySection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      print('=====================> Category Id  ${typeId}');
+      print('=====================> purposeId Id  ${purposeId}');
+      print('=====================> typeId Id  ${typeId}');
       Get.find<PropertyController>().getPropertyList(page: '1',
       purposeId: purposeId,
       typeId:typeId);

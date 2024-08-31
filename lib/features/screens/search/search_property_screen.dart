@@ -11,6 +11,7 @@ import 'package:get_my_properties/features/widgets/empty_data_widget.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/images.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
+import 'package:get_my_properties/utils/styles.dart';
 
 
 class SearchPropertyScreen extends StatelessWidget {
@@ -21,79 +22,115 @@ class SearchPropertyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      print(searchText);
+      print(purposeId);
       Get.find<PropertyController>().getSearchPropertyList(
         page: '1',
         limit: '10',
         latitude: '',
         longitude: '',
-        query: searchText,
-        purposeId: purposeId,
-
-      );
-
+        query: '${searchText}',
+        purposeId: '${purposeId}');
     });
-    return  Scaffold(
-      appBar: AppBar(
-        leading: IconButton(onPressed: () {
-          Get.back();
-        },
-        icon: const Icon(CupertinoIcons.back)),
-        title:  SearchField(
-          tap: () {
+    return  WillPopScope(
+      onWillPop: () async {
+        Get.find<PropertyController>().getRecentSearchList();
+        return true; // Allow the pop action to proceed
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(onPressed: () {
+            Get.find<PropertyController>().getRecentSearchList();
             Get.back();
           },
-            child: const SizedBox()),
-      ),
-      bottomNavigationBar: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
-          child: Row(
-            children: [
-              TextButton(onPressed: () {}, child: const Text('X Clear Filters')),
-              sizedBoxW30(),
-              sizedBoxW30(),
+          icon: const Icon(CupertinoIcons.back)),
+          title:  SearchField(
+            tap: () {
+              Get.back();
+            },
+              child: const SizedBox()),
+        ),
+        bottomNavigationBar: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+            child: Row(
+              children: [
+                TextButton(onPressed: () {
+                  Get.find<PropertyController>().getPropertyList(page: '1',
 
-
-              Expanded(
-                child: CustomButtonWidget(
-                  height: 40,
-                  isBold: false,
-                  buttonText: 'Add Filters',
-                onPressed: () {
-                  Get.bottomSheet(
-                    const FilterBottomSheet(),
-                    backgroundColor: Colors.transparent,
-                    isScrollControlled: true,
                   );
-                },),
-              )
-            ],
+
+                }, child: const Text('X Clear Filters')),
+                sizedBoxW30(),
+                sizedBoxW30(),
+
+
+                Expanded(
+                  child: CustomButtonWidget(
+                    height: 40,
+                    isBold: false,
+                    buttonText: 'Add Filters',
+                  onPressed: () {
+                    Get.bottomSheet(
+                      const FilterBottomSheet(),
+                      backgroundColor: Colors.transparent,
+                      isScrollControlled: true,
+                    );
+                  },),
+                )
+              ],
+            ),
           ),
         ),
-      ),
-      body: SingleChildScrollView(
-        child: GetBuilder<PropertyController>(builder: (propertyControl) {
-          final list = propertyControl.searchPropertyList;
+        body: GetBuilder<PropertyController>(builder: (propertyControl) {
+          final list = propertyControl.propertyList;
           final isListEmpty = list == null || list.isEmpty;
           final isLoading = propertyControl.isPropertyLoading;
           return
-             isListEmpty && !isLoading
-              ? Padding(
-                  padding:
-                      const EdgeInsets.only(top: Dimensions.paddingSize40),
-                  child: Center(
-                    child: EmptyDataWidget(
-                      image: Images.icSearchPlaceHolder,
-                      fontColor: Theme.of(context).disabledColor,
-                      text: '',
-                    ),
+              isListEmpty && !isLoading
+                  ? Padding(
+                padding:
+                const EdgeInsets.only(top: Dimensions.paddingSize40),
+                child: Center(
+                  child: EmptyDataWidget(
+                    image: Images.icSearchPlaceHolder,
+                    fontColor: Theme.of(context).disabledColor,
+                    text: 'No Property Found\n According to you Search',
                   ),
-                )
-              : isLoading || isListEmpty
+                ),
+              )
+                  : isLoading || isListEmpty
                   ? const ExploreScreenShimmer()
-                  : ListView.separated(
+                  : SingleChildScrollView(
+                    child: Column(
+                                  children: [
+                    sizedBox10(),
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: '${list.length} ',
+                            style: senSemiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
+                                color: Theme.of(context).primaryColor),
+                          ),
+                          TextSpan(
+                            text: 'Properties',
+                            style: senSemiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
+                                color: Theme.of(context).primaryColor),
+                          ),
+                          TextSpan(
+                            text: ' Available For You',
+                            style: senRegular.copyWith(fontSize: Dimensions.fontSize14,
+                              color: Theme.of(context).disabledColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    ListView.separated(
                       padding: const EdgeInsets.all(
-                        Dimensions.paddingSizeDefault),
+                          Dimensions.paddingSizeDefault),
                       physics: const BouncingScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: list.length,
@@ -111,11 +148,17 @@ class SearchPropertyScreen extends StatelessWidget {
                         );
                       },
                       separatorBuilder: (BuildContext context,
-                              int index) =>
-                          const SizedBox(
-                              height: Dimensions.paddingSizeDefault),
-                    );
+                          int index) =>
+                      const SizedBox(
+                          height: Dimensions.paddingSizeDefault),
+                    ),
+                                  ],
+                                ),
+                  );
+
         })
+
+
 
 
       ),

@@ -18,11 +18,9 @@ class SellerPropertiesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Initialize controllers
     final PropertyController propertyControl = Get.find<PropertyController>();
     final VendorController vendorControl = Get.find<VendorController>();
 
-    // Fetch data on widget build
     WidgetsBinding.instance.addPostFrameCallback((_) {
       propertyControl.getVendorPropertyList(page: '1', status: 'active');
     });
@@ -34,7 +32,7 @@ class SellerPropertiesScreen extends StatelessWidget {
         isBackButtonExist: false,
       ),
       body: GetBuilder<PropertyController>(builder: (propertyControl) {
-        final list = propertyControl.propertyList;
+        final list = propertyControl.verdorPropertyList;
         final isLoading = propertyControl.isPropertyLoading;
 
         return Column(
@@ -102,12 +100,16 @@ class SellerPropertiesScreen extends StatelessWidget {
                   itemCount: list.length,
                   itemBuilder: (_, i) {
                     return RecommendedItemCard(
+                      vendorDeleteTap: () {
+                        // print(vendorControl.vendorPropertyStatus[i]);
+                        propertyControl.deleteVenderProperty(list[i].id,vendorControl.vendorPropertyStatus[i]);
+                      },
                       isVendor: true,
                       vertical: true,
-                      image: list[i].displayImages[0].image ?? '',
+                      image: list[i].displayImage![0].image.toString(),
                       title: list[i].title ?? '',
                       description: list[i].description ?? '',
-                      price: '₹ ${list[i].price ?? ''}',
+                      price: '${list[i].price ?? ''}',
                       propertyId: list[i].id ?? '',
                       ratingText: '4.5',
                       likeTap: () {},

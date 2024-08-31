@@ -28,6 +28,7 @@ class _SaleAndRentDashboardState extends State<SaleAndRentDashboard> {
 
   @override
   void initState() {
+    print(widget.purposeId);
     super.initState();
     _pageIndex = widget.pageIndex;
     _pageController = PageController(initialPage: widget.pageIndex);
@@ -83,6 +84,9 @@ class _SaleAndRentDashboardState extends State<SaleAndRentDashboard> {
                   child: InkWell(
                     onTap: () {
                       _setPage(0);
+                      Get.find<PropertyController>().getPropertyList(page: '1',
+                          purposeId: widget.purposeId,
+                          typeId:widget.typeId);
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -106,6 +110,9 @@ class _SaleAndRentDashboardState extends State<SaleAndRentDashboard> {
                   child: InkWell(
                     onTap: () {
                       _setPage(1);
+                      // Get.find<PropertyController>().getPropertyList(page: '1',
+                      //     purposeId: widget.purposeId,
+                      //     typeId:widget.typeId);
                     },
                     child: Container(
                       decoration: BoxDecoration(

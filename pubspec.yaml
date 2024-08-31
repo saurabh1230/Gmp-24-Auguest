@@ -57,7 +57,17 @@ dev_dependencies:
   location: ^7.0.0
   geolocator: ^12.0.0
   geocoding: ^3.0.0
- 
+  shimmer: ^2.0.0
+  google_places_flutter: ^2.0.9
+  pretty_animated_buttons: ^0.0.2
+  flutter_typeahead: ^4.0.0
+  animated_custom_dropdown: ^3.1.1
+  device_info_plus: ^10.1.2
+  app_settings: ^5.0.2
+  permission_handler: ^11.2.0
+  url_launcher: ^6.3.0
+
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -76,6 +86,7 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
   assets:
     - assets/images/
     - assets/icons/

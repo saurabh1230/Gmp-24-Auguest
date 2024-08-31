@@ -7,7 +7,7 @@ import 'package:get_my_properties/utils/images.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
 import 'package:get/get.dart';
-
+import 'package:pretty_animated_buttons/pretty_animated_buttons.dart';
 
 class BrowseMoreSection extends StatelessWidget {
   final String title;
@@ -31,9 +31,18 @@ class BrowseMoreSection extends StatelessWidget {
           color: Theme.of(context).disabledColor.withOpacity(0.40)),
           textAlign: TextAlign.center,maxLines: 2,),
           sizedBoxDefault(),
-          CustomButtonWidget(buttonText: "Browse ",
+          PrettyWaveButton(
+            backgroundColor: Theme.of(context).primaryColor,
             onPressed: onTap,
-          icon: Icons.arrow_forward,)
+            child:  Text(
+              'Browse →',
+              style: senBold.copyWith(
+                color:  Theme.of(context).cardColor ,
+                fontSize:  Dimensions.fontSize18,
+              ) ,
+            ),
+          ),
+
 
         ],
       ),

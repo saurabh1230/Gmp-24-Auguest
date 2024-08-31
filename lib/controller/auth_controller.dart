@@ -274,8 +274,8 @@ class AuthController extends GetxController implements GetxService {
       Map<String, dynamic> responseData = response.body['data'];
       _homeData = TypeDataModel.fromJson(responseData);
       if (_homeData != null) {
-        _propertyTypeID = homeData!.propertyTypes![0].sId!;
-        _propertyPurposeID = homeData!.propertyPurposes![0].sId!;
+        // _propertyTypeID = homeData!.propertyTypes![0].sId!;
+        // _propertyPurposeID = homeData!.propertyPurposes![0].sId!;
         // _propertyCategoryId = homeData!.propertyCategory![0].sId!;
         // _amenityId = homeData!.propertyAmenities![0].sId!;
       }
@@ -341,10 +341,5 @@ class AuthController extends GetxController implements GetxService {
     lastBackPressTime = time;
     update();
   }
-
-
-
-
-
 
 }

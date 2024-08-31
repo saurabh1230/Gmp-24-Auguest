@@ -10,6 +10,7 @@ import 'package:get_my_properties/features/screens/inquiry/contact_agent_screen.
 import 'package:get_my_properties/features/screens/inquiry/widgets/add_inquiry_dialog.dart';
 import 'package:get_my_properties/features/screens/property/widgets/browse_other_constructions.dart';
 import 'package:get_my_properties/features/screens/property/widgets/calculate_emi_section.dart';
+import 'package:get_my_properties/features/screens/property/widgets/contact_agent_component.dart';
 import 'package:get_my_properties/features/screens/property/widgets/floor_plans_pricing_section.dart';
 import 'package:get_my_properties/features/screens/property/widgets/highlight_facts_section.dart';
 import 'package:get_my_properties/features/screens/property/widgets/location_advantage_section.dart';
@@ -20,6 +21,7 @@ import 'package:get_my_properties/features/widgets/custom_app_bar.dart';
 import 'package:fan_carousel_image_slider/fan_carousel_image_slider.dart';
 import 'package:get_my_properties/features/widgets/custom_buttons.dart';
 import 'package:get_my_properties/features/widgets/custom_snackbar.dart';
+import 'package:get_my_properties/helper/route_helper.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/images.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
@@ -60,34 +62,34 @@ class PropertiesDetailsScreen extends StatelessWidget {
                 child: Center(child: CircularProgressIndicator())) :
           Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal:  Dimensions.paddingSizeDefault),
-                child: Container(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize8),
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: PrefixIconButton(
-                        tap: () {
-                          Get.to( ContactAgentScreen());
-                        },
-                        title: 'Contact Agent',
-                      )),
-                      sizedBoxW10(),
-                      Expanded(
-                          child: PrefixIconButton(
-                        backgroundColor: Theme.of(context).primaryColor,
-                        textColor: Theme.of(context).cardColor,
-                        tap: () {
-                          Get.dialog( AddInquiryDialog(propertyId: list!.id.toString(),));
-                        },
-                        title: 'Inquire Now',
-                      )),
-                    ],
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal:  Dimensions.paddingSizeDefault),
+              //   child: Container(
+              //     color: Theme.of(context).scaffoldBackgroundColor,
+              //     padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize8),
+              //     child: Row(
+              //       children: [
+              //         Expanded(
+              //             child: PrefixIconButton(
+              //           tap: () {
+              //             Get.to( ContactAgentScreen());
+              //           },
+              //           title: 'Contact Agent',
+              //         )),
+              //         sizedBoxW10(),
+              //         Expanded(
+              //             child: PrefixIconButton(
+              //           backgroundColor: Theme.of(context).primaryColor,
+              //           textColor: Theme.of(context).cardColor,
+              //           tap: () {
+              //             Get.dialog( AddInquiryDialog(propertyId: list!.id.toString(),));
+              //           },
+              //           title: 'Inquire Now',
+              //         )),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,8 +133,18 @@ class PropertiesDetailsScreen extends StatelessWidget {
                         bedRoom: list.bedroom.toString(),
                         bathRoom:  list.bathroom.toString(),),
                       // const FloorPlansPricingSection(),
-                      // PropertyLocationMapComponent(longitude: list.longitude!, latitude: list.latitude!,),
+
+
+                      // PropertyLocationMapComponent(longitude: list.latitude, latitude: list.longitude,),
                       // const LocationAdvantageSection(),
+                       ContactAgentComponent(tap: () {
+                        Get.toNamed(RouteHelper.getContactAgentRoute(list.id.toString(),
+                            'Contact Agent'
+                        ));
+                      },),
+                      sizedBoxDefault(),
+                      const Divider(),
+                      sizedBoxDefault(),
                       EmiCalculator(),
                       // const RatingAndReviewSection(),
                       const BrowseOtherConstructionsSection()

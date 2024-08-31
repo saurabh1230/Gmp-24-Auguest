@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/features/screens/dashboard/nav_bar_item.dart';
+import 'package:get_my_properties/features/screens/inquiry/all_user_inquiry.dart';
 import 'package:get_my_properties/features/screens/profile/profile_screen.dart';
 import 'package:get_my_properties/features/screens/saved/saved_screen.dart';
 import 'package:get_my_properties/features/screens/seller_screens/home/seller_home.dart';
+import 'package:get_my_properties/features/screens/seller_screens/paylog/paylog_screen.dart';
 import 'package:get_my_properties/features/screens/seller_screens/property/post_property_screen.dart';
 import 'package:get_my_properties/features/screens/seller_screens/seller_properties_screen.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
@@ -40,9 +42,10 @@ class SellerDashboardScreenState extends State<SellerDashboardScreen> {
     _screens = [
        SellerHome(),
        SellerPropertiesScreen(),
-      PostPropertyScreen(),
-      const SavedScreen(),
-      ProfileScreen(),
+       PostPropertyScreen(),
+       const AllUserInquiry(),
+       // const PaylogScreen(),
+       ProfileScreen(),
     ];
 
     Future.delayed(const Duration(seconds: 1), () {
@@ -84,7 +87,7 @@ class SellerDashboardScreenState extends State<SellerDashboardScreen> {
               BottomNavItem(img: Images.icSellerDashboardIcon, isSelected: _pageIndex == 0, tap: () => _setPage(0), title: 'Home',),
               BottomNavItem(img: Images.navBarExplore, isSelected: _pageIndex == 1, tap: () => _setPage(1), title: 'Properties',),
               const Expanded(child: SizedBox()),
-              BottomNavItem(img: Images.navBarSave, isSelected: _pageIndex == 3, tap: () => _setPage(3), title: 'Saved',),
+              BottomNavItem(img: Images.icInquiry, isSelected: _pageIndex == 3, tap: () => _setPage(3), title: 'Inquiries',),
               BottomNavItem(img:Images.navBarProfile, isSelected: _pageIndex == 4, tap: () {
                 _setPage(4);
               }, title: 'Profile',),

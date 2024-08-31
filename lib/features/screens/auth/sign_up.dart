@@ -4,6 +4,7 @@ import 'package:get_my_properties/features/screens/Maps/location_view.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
 import 'package:get_my_properties/features/widgets/custom_buttons.dart';
 import 'package:get_my_properties/features/widgets/custom_textfield.dart';
+import 'package:get_my_properties/features/widgets/date_formatter.dart';
 import 'package:get_my_properties/helper/route_helper.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/images.dart';
@@ -104,7 +105,8 @@ class SignUpScreen extends StatelessWidget {
                                       authControl.selectLoginType(index);
                                       print(authControl.loginType);
                                     },
-                                    title: authControl.loginTypeList[index],
+
+                                    title: capitalizeFirstLetter(authControl.loginTypeList[index]),
                                     isSelected: authControl.loginType == index,
                                   );
                                 },

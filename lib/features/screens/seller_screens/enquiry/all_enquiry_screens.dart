@@ -42,11 +42,12 @@ class _AllEnquiryScreensState extends State<AllEnquiryScreens> {
               fontColor: Theme.of(context).primaryColor,
               text: 'No Enquiries yet',
             )) :
-        isLoading ?
-            const InquiryRequestShimmer() :
+
           SingleChildScrollView(
           child: Column(
             children: [
+              isLoading ?
+              const InquiryRequestShimmer() :
               ListView.separated(
                 padding: const EdgeInsets.all(Dimensions.fontSizeDefault),
                 physics: const NeverScrollableScrollPhysics(),

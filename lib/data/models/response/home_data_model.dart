@@ -197,8 +197,9 @@ class PropertyTypes {
   String? slug;
   String? status;
   String? createdAt;
+  String? image;
 
-  PropertyTypes({this.sId, this.name, this.slug, this.status, this.createdAt});
+  PropertyTypes({this.sId, this.name, this.slug, this.status, this.createdAt,this.image});
 
   PropertyTypes.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -206,6 +207,7 @@ class PropertyTypes {
     slug = json['slug'];
     status = json['status'];
     createdAt = json['created_at'];
+    image = json['image'];
   }
 
   Map<String, dynamic> toJson() {
@@ -215,6 +217,7 @@ class PropertyTypes {
     data['slug'] = this.slug;
     data['status'] = this.status;
     data['created_at'] = this.createdAt;
+    data['image'] = this.image;
     return data;
   }
 
