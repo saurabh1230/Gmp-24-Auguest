@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
 import 'package:get_my_properties/features/widgets/custom_image_widget.dart';
@@ -19,7 +20,11 @@ class NewlyConstructedSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.find<PropertyController>().getPropertyList(page: '1');
+      Get.find<PropertyController>().getTopPopularPropertyList(page: '1',
+          lat: Get.find<AuthController>().getLatitude().toString(),
+          long: Get.find<AuthController>().getLongitude().toString(),
+          direction: ''
+      );
     });
     return Padding(
       padding: const EdgeInsets.only(left:Dimensions.paddingSizeDefault,top:Dimensions.paddingSizeDefault,
@@ -30,18 +35,22 @@ class NewlyConstructedSection extends StatelessWidget {
         final list = propertyControl.featuredPropertyList;
         final isListEmpty = list == null || list.isEmpty ;
         final isLoading = propertyControl.isPropertyLoading;
-        return  isListEmpty && !isLoading
-            ? Center(
-                child: EmptyDataWidget(
-                  image: Images.emptyDataImage,
-                  fontColor: Theme.of(context).disabledColor,
-                  text: 'No Popular Properties yet',
-                )) : isLoading ?
+        return  isLoading ?
         const NewlyConstructedSectionShimmer() :
           Column(crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Featured Properties",style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault),),
             sizedBox12(),
+            isListEmpty && !isLoading
+                ?
+            // NewlyConstructedSectionShimmer()
+            Center(
+                    child: EmptyDataWidget(
+                      image: Images.emptyDataImage,
+                      fontColor: Theme.of(context).disabledColor,
+                      text: 'No Popular Properties yet',
+                    ))
+                :
             SizedBox(
               height: Get.size.height * 0.40,
               child: ListView.separated(

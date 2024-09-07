@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
 import 'package:get_my_properties/features/screens/home/widgets/recommended_item_card.dart';
@@ -19,7 +20,10 @@ class RecomendedSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.find<PropertyController>().getPropertyList(page: '1');
+      Get.find<PropertyController>().getPropertyList(page: '1',
+        direction: '',
+
+      );
     });
     return GetBuilder<PropertyController>(builder: (propertyControl) {
       final list = propertyControl.propertyList;
@@ -27,18 +31,7 @@ class RecomendedSection extends StatelessWidget {
       final isLoading = propertyControl.isPropertyLoading;
       return Column(
         children: [
-          isListEmpty && !isLoading
-              ? Padding(
-                  padding:
-                      const EdgeInsets.only(top: Dimensions.paddingSize100),
-                  child: Center(
-                      child: EmptyDataWidget(
-                    image: Images.emptyDataImage,
-                    fontColor: Theme.of(context).disabledColor,
-                    text: 'No Recommended Properties yet',
-                  )),
-                )
-              : isLoading
+          isLoading
                   ? const RecommendedSectionShimmer(title: 'Recommended For You"',)
                   : Padding(
                       padding: const EdgeInsets.only(
@@ -55,6 +48,20 @@ class RecomendedSection extends StatelessWidget {
                                 fontSize: Dimensions.fontSizeDefault),
                           ),
                           sizedBox12(),
+                          isListEmpty && !isLoading
+                              ?
+                          // const RecommendedSectionShimmer(title: 'Recommended For You"',)
+                          Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: Dimensions.paddingSize100),
+                                  child: Center(
+                                      child: EmptyDataWidget(
+                                    image: Images.emptyDataImage,
+                                    fontColor: Theme.of(context).disabledColor,
+                                    text: 'No Recommended Properties yet',
+                                  )),
+                                )
+                              :
                           SizedBox(
                             height: Get.size.height * 0.30,
                             child: ListView.separated(

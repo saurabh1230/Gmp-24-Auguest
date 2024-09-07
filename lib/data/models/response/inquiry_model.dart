@@ -4,6 +4,8 @@ class InquiryModel {
   String? phoneNumber;
   String? email;
   String? message;
+  String? date;
+  String? time;
   String? status;
   String? createdAt;
   Vender? vender;
@@ -15,6 +17,8 @@ class InquiryModel {
     this.phoneNumber,
     this.email,
     this.message,
+    this.date,
+    this.time,
     this.status,
     this.createdAt,
     this.vender,
@@ -28,6 +32,8 @@ class InquiryModel {
       phoneNumber: json['phone_number'].toString(),
       email: json['email'],
       message: json['message'],
+      date: json['date'],
+      time: json['time'],
       status: json['status'],
       createdAt: json['created_at'],
       vender: json['vender'] != null ? Vender.fromJson(json['vender']) : null,
@@ -43,6 +49,8 @@ class InquiryModel {
     data['phone_number'] = phoneNumber;
     data['email'] = email;
     data['message'] = message;
+    data['date'] = date;
+    data['time'] = time;
     data['status'] = status;
     data['created_at'] = createdAt;
     if (vender != null) {

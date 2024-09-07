@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_disposable.dart';
@@ -13,8 +15,8 @@ import 'package:get_my_properties/utils/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-
-
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 class AuthController extends GetxController implements GetxService {
   final AuthRepo authRepo;
   final SharedPreferences sharedPreferences;
@@ -82,30 +84,37 @@ class AuthController extends GetxController implements GetxService {
     _isLoginLoading = true;
     update();
 
-    try {
-      Response response;
-      if (isVendor) {
-        print('vendor');
-        response = await authRepo.vendorLoginRepo(phoneNo);
-      } else {
-        print('customer');
-        response = await authRepo.userLoginRepo(phoneNo);
-      }
-      var responseData = response.body;
-      if (responseData["status"] == true) {
-        String otp = responseData['data']['otp'].toString();
-        Get.toNamed(RouteHelper.getOtpVerificationRoute(phoneNo));
-        showCustomSnackBar('OTP: $otp');
-      } else {
-        showCustomSnackBar(responseData['message']);
-      }
-    } catch (e) {
-      showCustomSnackBar('An error occurred, please try again.');
-    } finally {
-      _isLoginLoading = false;
-      update();
-    }
+    final String url = isVendor
+        ?  '${AppConstants.baseUrl}${AppConstants.vendorLoginUrl}'
+        : '${AppConstants.baseUrl}${AppConstants.userLoginUrl}';
+
+      final response = await http.post(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'phone_number': phoneNo,
+           'user_type' : isVendor ? 'vender' : 'customer'
+        }),
+      );
+
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+        if (responseData['status'] == true) {
+          String otp = responseData['data']['otp'].toString();
+          Get.toNamed(RouteHelper.getOtpVerificationRoute(phoneNo));
+          showCustomSnackBar('OTP: $otp');
+        } else {
+          String errorMessage = responseData['message'] ?? 'Something went wrong.';
+          print("Error: $errorMessage");
+          showCustomSnackBar(errorMessage);
+        }
+
+    _isLoginLoading = false;
+    update();
   }
+
+
 
 
   // Future<void> userLoginApi(String phoneNo, bool isVendor = false) async {
@@ -340,6 +349,26 @@ class AuthController extends GetxController implements GetxService {
   void updateLastBackPressTime(DateTime time) {
     lastBackPressTime = time;
     update();
+  }
+
+  DateTime? _lastBackPressTime;
+
+  Future<bool> willPopCallback() async {
+    final now = DateTime.now();
+    if (_lastBackPressTime == null ||
+        now.difference(_lastBackPressTime!) > const Duration(seconds: 2)) {
+      _lastBackPressTime = now;
+      Get.showSnackbar(
+        GetSnackBar(
+          message: 'Press back again to exit',
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return Future.value(false);
+    }
+    SystemNavigator.pop(); // Closes the app
+    update();
+    return Future.value(true);
   }
 
 }

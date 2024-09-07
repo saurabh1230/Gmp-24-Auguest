@@ -246,7 +246,6 @@ class LocationController extends GetxController implements GetxService {
   GoogleMapController? mapController;
   double? latitude;
   double? longitude;
-  String? address;
 
   @override
   void onInit() {
@@ -258,70 +257,49 @@ class LocationController extends GetxController implements GetxService {
     bool serviceEnabled;
     LocationPermission permission;
 
-    // Check if location services are enabled
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      return;  // Handle if location services are not enabled
+      // Handle location services disabled
+      return;
     }
 
-    // Check for location permissions
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.deniedForever) {
-      return;  // Handle if permission is permanently denied
+      // Handle location permission denied forever
+      return;
     }
 
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission != LocationPermission.whileInUse &&
           permission != LocationPermission.always) {
-        return;  // Handle if permission is denied
+        // Handle location permission denied
+        return;
       }
     }
 
-    // Get current position
     Position currentPosition = await Geolocator.getCurrentPosition();
-
     latitude = currentPosition.latitude;
     longitude = currentPosition.longitude;
-    print(latitude);
-    print(longitude);
 
-    // Convert coordinates to address
-    await updateAddress();
+    print('Latitude: $latitude, Longitude: $longitude');
 
-    // Notify listeners to rebuild the UI
     update();
   }
-
-  Future<void> updateAddress() async {
-    if (latitude != null && longitude != null) {
-      try {
-        List<Placemark> placemarks = await placemarkFromCoordinates(latitude!, longitude!);
-        if (placemarks.isNotEmpty) {
-          Placemark placemark = placemarks.first;
-          address = '${placemark.street}, ${placemark.locality}, ${placemark.administrativeArea}, ${placemark.postalCode}, ${placemark.country}';
-          print(address);
-        }
-      } catch (e) {
-        print("Error occurred while converting coordinates to address: $e");
-      }
-    }
-  }
-
-
 
   void onMapCreated(GoogleMapController controller) {
     mapController = controller;
-    update();
     if (latitude != null && longitude != null) {
+      print('Moving camera to LatLng: $latitude, $longitude');
       mapController?.animateCamera(
         CameraUpdate.newLatLng(
           LatLng(latitude!, longitude!),
         ),
       );
+    } else {
+      print('Latitude or Longitude is null');
     }
   }
-
 
 
 

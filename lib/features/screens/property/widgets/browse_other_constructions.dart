@@ -38,7 +38,7 @@ class BrowseOtherConstructionsSection extends StatelessWidget {
             Text("Browse Other Constructions",style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault),),
             sizedBox12(),
             SizedBox(
-              height: Get.size.height * 0.28,
+              height: Get.size.height * 0.30,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 itemCount: list!.length,

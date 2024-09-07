@@ -4,6 +4,7 @@ import 'package:get_my_properties/controller/inquiry_controller.dart';
 import 'package:get_my_properties/features/widgets/custom_app_bar.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
 import 'package:get_my_properties/features/widgets/custom_textfield.dart';
+import 'package:get_my_properties/utils/date_converter.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/images.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
@@ -17,7 +18,9 @@ class ContactAgentScreen extends StatelessWidget {
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
+  final _dateController = TextEditingController();
    final _messageController = TextEditingController();
+  final _timeController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -29,6 +32,7 @@ class ContactAgentScreen extends StatelessWidget {
           child: Stack(
             children: [
               SingleChildScrollView(
+                physics: const NeverScrollableScrollPhysics(),
                 child: SizedBox(
                   height: Get.size.height,
                   child: Padding(
@@ -106,6 +110,65 @@ class ContactAgentScreen extends StatelessWidget {
                             return null;
                           },
                         ),
+                        sizedBox10(),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: CustomTextField(
+                                readOnly: true,
+                                onTap:  () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: inquiryControl.selectedDate.value,
+                                    firstDate: DateTime(2000),
+                                    lastDate: DateTime(2101),
+                                  );
+                              
+                                  if (pickedDate != null && pickedDate != inquiryControl.selectedDate.value) {
+                                    inquiryControl.updateDate(pickedDate);
+                                    String formattedDate = SimpleDateConverter.formatDateToCustomFormat(pickedDate);
+                                    _dateController.text = formattedDate.toString();
+                                    print( _dateController.text);
+                                  }
+                                },
+                                hintText: 'Preferred Date',
+                                controller:_dateController,
+                                validation: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your date';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            sizedBoxW10(),
+                            Expanded(
+                              child: CustomTextField(
+                                readOnly: true,
+                                onTap: () async {
+                                  TimeOfDay? pickedTime = await showTimePicker(
+                                    context: context,
+                                    initialTime: inquiryControl.selectedTime.value,
+                                  );
+                                  if (pickedTime != null && pickedTime != inquiryControl.selectedTime.value) {
+                                    inquiryControl.updateTime(pickedTime);
+                                    String formattedTime = TimeConverter.formatTimeToCustomFormat(pickedTime);
+                                    _timeController.text = formattedTime;
+                                    print(_timeController.text);
+                                  }
+                                },
+                                hintText: 'Preferred Time',
+                                controller: _timeController,
+                                validation: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your time';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
 
                         sizedBox10(),
                         CustomTextField(
@@ -137,7 +200,9 @@ class ContactAgentScreen extends StatelessWidget {
                       name: _nameController.text,
                       phoneNo:  Get.find<AuthController>().profileData!.phoneNumber.toString(),
                       email:  _emailController.text,
-                      message:   _messageController.text,);
+                      message:   _messageController.text,
+                      date: _dateController.text,
+                      time: _timeController.text,);
                   }
                 },),
               )

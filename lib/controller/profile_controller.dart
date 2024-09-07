@@ -211,6 +211,8 @@ class ProfileController extends GetxController implements GetxService {
         var responseBody = await response.stream.bytesToString();
         print('Response Body: $responseBody');
         Get.find<AuthController>().getVendorDataApi();
+        Get.find<AuthController>().profileDetailsApi(isVendor: true);
+        showCustomSnackBar('Profile Updated Succesfully');
         return jsonDecode(responseBody);
 
       } else {

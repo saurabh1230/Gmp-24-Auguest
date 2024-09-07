@@ -55,7 +55,7 @@ class _AllEnquiryScreensState extends State<AllEnquiryScreens> {
                 shrinkWrap: true,
                 itemBuilder: (_, i) {
                   final inquiry = list[i];
-                  final DateTime createdAtDate = DateConverter.parseDateString(inquiry.createdAt);
+                  final DateTime createdAtDate = DateConverter.parseDateString(inquiry.date);
                   final formattedDate = DateConverter.estimatedOnlyDate(createdAtDate);
                   return EnquirySectionComponent(
                     name: inquiry.name,

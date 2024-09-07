@@ -8,44 +8,50 @@ class PropertyLocationMapComponent extends StatelessWidget {
   final double? latitude;
 
   const PropertyLocationMapComponent({
-    super.key,
+    Key? key,
     this.longitude,
     this.latitude,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 300,
-      width: Get.size.width,
+      width: double.infinity,
       child: GetBuilder<LocationController>(
-        builder: (locationControl) {
-          if (longitude == null || latitude == null || locationControl.latitude == null || locationControl.longitude == null) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          LatLng center = LatLng(latitude!, longitude!);
+        builder: (locationController) {
+          LatLng center = LatLng(
+            latitude ?? locationController.latitude ?? 0.0,
+            longitude ?? locationController.longitude ?? 0.0,
+          );
+
           return GoogleMap(
-            mapToolbarEnabled: false,
-            zoomGesturesEnabled: true,  // Ensure zoom gestures are enabled
-            zoomControlsEnabled: true,
+            // mapToolbarEnabled: false,
+            // zoomGesturesEnabled: true,
+            // zoomControlsEnabled: true,
             initialCameraPosition: CameraPosition(
               target: center,
               zoom: 14.0,
             ),
             markers: {
               Marker(
-                markerId: const MarkerId('currentLocation'),
+                markerId: const MarkerId('currentLocationMarker'),
                 position: center,
+                infoWindow: InfoWindow(
+                  title: 'Current Location',
+                ),
               ),
             },
-            onMapCreated: (GoogleMapController controller) {
-              locationControl.onMapCreated(controller);
-              controller.animateCamera(
-                CameraUpdate.newLatLng(center),
-              );
-            },
-            onCameraMove: (CameraPosition position) {
-            },
+            // onMapCreated: (GoogleMapController controller) {
+            //   locationController.onMapCreated(controller);
+            //
+            //   // Animate camera to the location if coordinates are available
+            //   WidgetsBinding.instance.addPostFrameCallback((_) {
+            //     if (latitude != null && longitude != null) {
+            //       controller.animateCamera(CameraUpdate.newLatLng(center));
+            //     }
+            //   });
+            // },
           );
         },
       ),

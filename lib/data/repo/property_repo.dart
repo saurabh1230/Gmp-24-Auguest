@@ -29,11 +29,12 @@ class PropertyRepo {
     String? direction,
     String? bathroom,
     String? space,
+    String? distance,
   }) async {
     // Initialize the map to hold the fields
-    Map<String, dynamic> fields = {}; // Changed to dynamic to allow different data types
+    Map<String, dynamic> fields = {
 
-    // Add fields conditionally based on their presence
+    };
     if (stateId != null) fields['state_id'] = stateId;
     if (cityId != null) fields['city_id'] = cityId;
     if (localityId != null) fields['locality_id'] = localityId;
@@ -46,22 +47,19 @@ class PropertyRepo {
     if (page != null) fields['page'] = page;
     if (limit != null) fields['limit'] = limit;
     if (sortBy != null) fields['sort_by'] = sortBy;
-
-    // Convert lat and long to double, if provided
     if (lat != null) fields['lat'] = double.tryParse(lat) ?? lat;
     if (long != null) fields['long'] = double.tryParse(long) ?? long;
-
+    if (distance != null) fields['distance'] = distance;
     if (direction != null) fields['direction'] = direction;
     if (bathroom != null) fields['bathroom'] = bathroom;
     if (space != null) fields['space'] = space;
     if (userId != null) fields['user_id'] = userId;
-
-    // Make the API request
     try {
       Response response = await apiClient.postData(
         AppConstants.userGetPropertyUrl,
         fields,
       );
+      print('Body Fields : ${fields}');
 
       if (response.statusCode == 200) {
         print('API call successful.');
@@ -170,6 +168,44 @@ class PropertyRepo {
   Future<Response> vendorDeletePropertyRepo(String propertyId) async {
     return await apiClient.getData('${AppConstants.vendorPropertyUrl}/$propertyId',method: 'DELETE');
   }
+
+  Future<Response> getPropertyLatLng({
+    String? limit,
+    String? lat,
+    String? long,
+    double? distance,
+
+  }) async {
+    // Initialize the map to hold the fields
+    Map<String, dynamic> fields = {
+      "page": '1',
+      "limit": '100',
+      "lat": '22.5744', // 18.5204,
+      "long": '88.3629', //  73.8567
+      "distance": '100'
+
+    };
+
+    try {
+      Response response = await apiClient.postData(
+        'https://dev.invoidea.in/gmp/api/user/property/lat_long',
+        fields,
+      );
+      print('Body Fields : ${fields}');
+
+      if (response.statusCode == 200) {
+        print('API call successful.');
+      } else {
+        print('API call failed with status code: ${response.statusCode}');
+        print('Response body: ${response.body}');
+      }
+      return response;
+    } catch (e) {
+      print('Error making API call: $e');
+      rethrow; // You can choose to rethrow the error or handle it differently
+    }
+  }
+
 
 
 

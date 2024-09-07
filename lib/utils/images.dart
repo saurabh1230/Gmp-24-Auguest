@@ -38,4 +38,11 @@ class Images {
   static const String icRupee = 'assets/icons/ic_rupee.png';
   static const String icInquiry = 'assets/icons/ic_inquiries.png';
   static const String icTrash = 'assets/icons/ic_trash.png';
+  static const String imgEast = 'assets/images/img_east.png';
+  static const String imgWest = 'assets/images/img_west.png';
+  static const String imgNorth = 'assets/images/img_north.png';
+  static const String imgSouth = 'assets/images/img_south.png';
+  static const String imgCentral = 'assets/images/img_central.png';
+  static const String imgCenter = 'assets/images/img_center.jpg';
+
 }

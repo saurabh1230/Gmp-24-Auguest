@@ -103,7 +103,7 @@ class AddInquiryDialog extends StatelessWidget {
                                   name: _nameController.text,
                                   phoneNo:  Get.find<AuthController>().profileData!.phoneNumber.toString(),
                                   email:  _emailController.text,
-                                  message:   _messageController.text,);
+                                  message:   _messageController.text, date: '', time: '',);
 
                             }
                           },

@@ -12,9 +12,41 @@ class VendorMapController extends GetxController {
   double? longitude;
   String? address;
   String? locality;
-  double? currentLatitude;
-  double? currentLongitude;
 
+
+
+  double ? _initialLat;
+  double? get initialLat => _initialLat;
+
+  void setInitialLat(double val) {
+    _initialLat = val;
+    update();
+  }
+
+  double ? _initialLng;
+  double? get initialLng => _initialLng;
+
+  void setInitialLng(double val) {
+    _initialLng = val;
+    update();
+  }
+
+
+  double ? _mainLat;
+  double? get mainLat => _mainLat;
+
+  void setMainLat(double val) {
+    _mainLat = val;
+    update();
+  }
+
+  double ? _mainLng;
+  double? get mainLng => _mainLng;
+
+  void setMainLng(double val) {
+    _mainLng = val;
+    update();
+  }
 
 
   RxList<Map<String, String>> suggestions = <Map<String, String>>[].obs;
@@ -67,10 +99,13 @@ class VendorMapController extends GetxController {
     Position currentPosition = await Geolocator.getCurrentPosition();
     latitude = currentPosition.latitude;
     longitude = currentPosition.longitude;
-    currentLatitude = currentPosition.latitude;
-    currentLongitude = currentPosition.longitude;
-    print('========> ${currentLatitude}');
-    print('========> ${currentLongitude}');
+    _initialLat = currentPosition.latitude;
+    _initialLng = currentPosition.longitude;
+    _mainLat = currentPosition.latitude;
+    _mainLng = currentPosition.longitude;
+    print('==========> Intial Location');
+    print('Latitude =>>>>: $latitude');
+    print('Longitude =>>>>: $longitude');
     await updateAddress();
     update();
   }
@@ -87,16 +122,17 @@ class VendorMapController extends GetxController {
           print('Locality =>>>> : ${placemark.subLocality ?? 'Not available'}');
           print('Latitude =>>>>: $latitude');
           print('Longitude =>>>>: $longitude');
-          print('========>currentLatitude ${currentLatitude}');
-          print('========> currentLongitude ${currentLongitude}');
-          // Check if _localities is null or if it contains any items
+          print('========>initialLatitude ${_initialLat}');
+          print('========> initialLongitude ${_initialLng}');
+          print('========>mainLatitude ${_mainLat}');
+          print('========> mainLongitude ${_mainLng}');
           _localities ??= [];
 
-          // Create a new LocalityMapData object
+          // Create a new LocalityMapData objects
           LocalityMapData newLoc = LocalityMapData(
-            name: placemark.subLocality ?? 'Unknown',
-            lat: currentLatitude!,
-            lng: currentLongitude!,
+            name: placemark.locality ?? 'Unknown',
+            lat: latitude!,
+            lng: longitude!,
           );
 
           // Check if _localities already contains the newLoc based on some criteria
@@ -124,32 +160,6 @@ class VendorMapController extends GetxController {
   }
 
 
-
-
-  // Future<void> updateAddress() async {
-  //   if (latitude != null && longitude != null) {
-  //     try {
-  //       List<Placemark> placemarks = await placemarkFromCoordinates(latitude!, longitude!);
-  //       if (placemarks.isNotEmpty) {
-  //         Placemark placemark = placemarks.first;
-  //         address = '${placemark.street ?? ''}, ${placemark.locality ?? ''}, ${placemark.administrativeArea ?? ''}, ${placemark.postalCode ?? ''}, ${placemark.country ?? ''}';
-  //         print('Address =>>>>: $address');
-  //         print('City =>>>>: ${placemark.locality ?? 'Not available'}');
-  //         print('State =>>>>: ${placemark.administrativeArea ?? 'Not available'}');
-  //         print('Locality =>>>> : ${placemark.subLocality ?? 'Not available'}');
-  //         print('Latitude =>>>>: $latitude');
-  //         print('Longitude =>>>>: $longitude');
-  //
-  //
-  //       }
-  //
-  //
-  //
-  //     } catch (e) {
-  //       print("Error occurred while converting coordinates to address: $e");
-  //     }
-  //   }
-  // }
 
   void onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -192,20 +202,11 @@ class VendorMapController extends GetxController {
         final location = data['result']['geometry']['location'];
         latitude = location['lat'];
         longitude = location['lng'];
-        // if (locality != null) {
-        //   LocalityMapData loc = LocalityMapData(
-        //     name: locality!,
-        //     lat: latitude!,
-        //     lng: longitude!,
-        //   );
-        //   _localities!.add(loc);
-        //
-        // }
-        // print('Controller Print : ${_localities![0].name}');
-
+        _initialLat = location['lat'];
+        _initialLng = location['lng'];
+        _mainLat = location['lat'];
+        _mainLng = location['lng'];
         update();  // Update the UI
-        ///
-
       }
     }
   }

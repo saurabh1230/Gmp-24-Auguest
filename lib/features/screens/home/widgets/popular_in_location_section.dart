@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
 import 'package:get_my_properties/features/screens/home/widgets/recomended_section.dart';
 import 'package:get_my_properties/features/screens/home/widgets/recommended_item_card.dart';
@@ -17,7 +18,13 @@ class PopularInLocationSectionSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.find<PropertyController>().getPropertyList(page: '1');
+      Get.find<PropertyController>().getTopPopularPropertyList(page: '1',
+          lat: Get.find<AuthController>().getLatitude().toString(),
+          long: Get.find<AuthController>().getLongitude().toString(),
+          direction: ''
+
+
+      );
     });
     return Padding(
       padding: const EdgeInsets.only(left:Dimensions.paddingSizeDefault,top:Dimensions.paddingSizeDefault,
@@ -26,28 +33,31 @@ class PopularInLocationSectionSection extends StatelessWidget {
         final list = propertyControl.topPropertyList;
         final isListEmpty = list == null || list.isEmpty;
         final isLoading = propertyControl.isPropertyLoading;
-        print('=======>>>> top property lenght${list!.length}');
-        return  isListEmpty && !isLoading
-            ? Padding(
-          padding: const EdgeInsets.only(top: Dimensions.paddingSize100),
-          child: Center(
-              child: EmptyDataWidget(
-                image: Images.emptyDataImage,
-                fontColor: Theme.of(context).disabledColor,
-                text: 'No Popular Properties yet',
-              )),
-        ) : isLoading ?
+        return isLoading ?
         const RecommendedSectionShimmer(title: 'Top Properties ',)
-        // const RecommendedSectionShimmer(title: 'Popular In Location',)
-            : Column(crossAxisAlignment: CrossAxisAlignment.start,
+            :
+           Column(crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Top Properties",style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault),),
             sizedBox12(),
+            isListEmpty && !isLoading
+                ?
+            // RecommendedSectionShimmer(title: 'Top Properties ',)
+              Padding(
+              padding: const EdgeInsets.only(top: Dimensions.paddingSize100),
+              child: Center(
+                  child: EmptyDataWidget(
+                    image: Images.emptyDataImage,
+                    fontColor: Theme.of(context).disabledColor,
+                    text: 'No Popular Properties yet',
+                  )),
+            )
+                :
             SizedBox(
               height: Get.size.height * 0.30,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
-                itemCount: list.length > 6 ? 6 : list.length,
+                itemCount: list!.length > 6 ? 6 : list.length,
                 itemBuilder: (_,i) {
                   return RecommendedItemCard(
                     image: list[i].displayImages[0].image,

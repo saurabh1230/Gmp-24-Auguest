@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get_my_properties/data/models/body/vendor_locality.dart';
 import 'package:get_my_properties/features/widgets/custom_app_bar.dart';
+import 'package:get_my_properties/utils/styles.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:get_my_properties/controller/vendor_map_controller.dart';
@@ -41,6 +42,8 @@ class VendorMapView extends StatelessWidget {
                 onCameraMove: (CameraPosition position) {
                   locationControl.latitude = position.target.latitude;
                   locationControl.longitude = position.target.longitude;
+                  locationControl.setMainLat(position.target.latitude);
+                  locationControl.setMainLng(position.target.longitude);
                   locationControl.updateAddress(); // Update address on camera move
                   locationControl.update();  // Notify listeners to update UI
                 },
@@ -49,38 +52,43 @@ class VendorMapView extends StatelessWidget {
                 top: 10,
                 left: 20,
                 right: 20,
-                child: TypeAheadField(
-                  textFieldConfiguration: TextFieldConfiguration(
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Theme.of(context).cardColor,
-                      hintText: 'Search Location',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
-                  suggestionsCallback: (pattern) async {
-                    await locationControl.fetchSuggestions(pattern);
-                    return locationControl.suggestions.toList();
-                  },
-                  itemBuilder: (context, suggestion) {
-                    return ListTile(
-                      title: Text(suggestion['description'] ?? ''),
-                    );
-                  },
-                  onSuggestionSelected: (suggestion) async {
-                    String placeId = suggestion['place_id'] ?? '';
-                    await locationControl.fetchLocationDetails(placeId);
-                    if (locationControl.latitude != null &&
-                        locationControl.longitude != null) {
-                      locationControl.mapController?.animateCamera(
-                        CameraUpdate.newLatLng(
-                          LatLng(locationControl.latitude!, locationControl.longitude!),
+                child: Column(
+                  children: [
+                    TypeAheadField(
+                      textFieldConfiguration: TextFieldConfiguration(
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Theme.of(context).cardColor,
+                          hintText: 'Search Location',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
-                      );
-                    }
-                  },
+                      ),
+                      suggestionsCallback: (pattern) async {
+                        await locationControl.fetchSuggestions(pattern);
+                        return locationControl.suggestions.toList();
+                      },
+                      itemBuilder: (context, suggestion) {
+                        return ListTile(
+                          title: Text(suggestion['description'] ?? ''),
+                        );
+                      },
+                      onSuggestionSelected: (suggestion) async {
+                        String placeId = suggestion['place_id'] ?? '';
+                        await locationControl.fetchLocationDetails(placeId);
+                        if (locationControl.latitude != null &&
+                            locationControl.longitude != null) {
+                          locationControl.mapController?.animateCamera(
+                            CameraUpdate.newLatLng(
+                              LatLng(locationControl.latitude!, locationControl.longitude!),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                    Text('Search Location by Locality',style: senRegular.copyWith(color: Theme.of(context).disabledColor),)
+                  ],
                 ),
               ),
               Positioned(
@@ -113,6 +121,7 @@ class VendorMapView extends StatelessWidget {
                         // }
 
                         Get.back();
+
                         // Get.find<AuthController>().saveLatitude(latitude);
                         // Get.find<AuthController>().saveLongitude(longitude);
                         // Get.find<AuthController>().saveAddress(locationControl.address ?? '');

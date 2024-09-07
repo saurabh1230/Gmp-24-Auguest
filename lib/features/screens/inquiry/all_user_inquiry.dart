@@ -52,8 +52,9 @@ class AllUserInquiry extends StatelessWidget {
                       shrinkWrap: true,
                       itemCount: list!.length,
                       itemBuilder: (_, i) {
+                        print(list[i].date.toString());
                         return InquiryContentComponent(
-                            date: list[i].createdAt.toString(),
+                            date: list[i].date.toString(),
                             image: list[i].property!.displayImage![0].image.toString(),
                             propertyTitle: list[i].property!.title.toString(),
                             agentName: list[i].vender?.name ?? 'Gmp Admin',
@@ -61,7 +62,8 @@ class AllUserInquiry extends StatelessWidget {
                           propertyId: list[i].sId.toString(),
                           status: list[i].status.toString(),
                           customerName: list[i].name ?? '',
-                          customerContactNo: list[i].phoneNumber ?? '',);
+                          customerContactNo: list[i].phoneNumber ?? '',
+                          time: list[i].time.toString(),);
                       }, separatorBuilder: (BuildContext context, int index) => sizedBox10(),),
         );
       }),

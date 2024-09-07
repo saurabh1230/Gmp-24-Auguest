@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/data/models/response/inquiry_model.dart';
@@ -18,6 +19,18 @@ class InquiryController extends GetxController implements GetxService {
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
+
+  var selectedDate = DateTime.now().obs;
+
+  void updateDate(DateTime newDate) {
+    selectedDate.value = newDate;
+  }
+
+  Rx<TimeOfDay> selectedTime = TimeOfDay.now().obs;
+
+  void updateTime(TimeOfDay time) {
+    selectedTime.value = time;
+  }
 
   // Future<void> userPropertyInquiryApi(
   //     String? propertyID,String? name,String? phoneNo,String? email,String? message,) async {
@@ -48,6 +61,9 @@ class InquiryController extends GetxController implements GetxService {
     required String phoneNo,
     required String email,
     required String message,
+    required String date,
+    required String time,
+
   }) async {
     final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? token = sharedPreferences.getString(AppConstants.token);
@@ -74,6 +90,8 @@ class InquiryController extends GetxController implements GetxService {
       "phone_number": phoneNo,
       "email": email,
       "message": message,
+      "date": date,
+      "time": time,
     });
 
     try {

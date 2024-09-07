@@ -1,4 +1,5 @@
 
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 
@@ -103,4 +104,34 @@ class DateConverter {
     return day;
   }
 
+}
+
+
+class SimpleDateConverter {
+
+  // Method to parse a date string into a DateTime object
+  static DateTime parseDateString(String dateString) {
+    return DateTime.parse(dateString); // Parses the string into DateTime
+  }
+
+  // Method to format a DateTime object into 'dd-MM-yyyy' format
+  static String formatDateToCustomFormat(DateTime dateTime) {
+    return DateFormat('dd-MM-yyyy').format(dateTime);
+  }
+
+  // Example usage combining both methods
+  static String parseAndFormatDateString(String dateString) {
+    DateTime dateTime = parseDateString(dateString);
+    return formatDateToCustomFormat(dateTime);
+  }
+
+}
+
+class TimeConverter {
+  // Method to format a TimeOfDay object into 'HH:mm' format
+  static String formatTimeToCustomFormat(TimeOfDay timeOfDay) {
+    final now = DateTime.now();
+    final dateTime = DateTime(now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
+    return DateFormat('HH:mm').format(dateTime);
+  }
 }

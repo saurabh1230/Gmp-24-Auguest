@@ -13,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:get_my_properties/utils/theme/light_theme.dart';
 class InquiryContentComponent extends StatelessWidget {
   final String date;
+  final String time;
   final String image;
   final String propertyTitle;
   final String agentName;
@@ -21,7 +22,7 @@ class InquiryContentComponent extends StatelessWidget {
   final String message;
   final String propertyId;
   final String status;
-  const InquiryContentComponent({super.key, required this.date, required this.image, required this.propertyTitle, required this.agentName, required this.message, required this.propertyId, required this.status, required this.customerName, required this.customerContactNo});
+  const InquiryContentComponent({super.key, required this.date, required this.image, required this.propertyTitle, required this.agentName, required this.message, required this.propertyId, required this.status, required this.customerName, required this.customerContactNo, required this.time});
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +38,12 @@ class InquiryContentComponent extends StatelessWidget {
           children: [
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomDecoratedContainer(
-                    color: Theme.of(context).cardColor,
-                    child: Text(
-                        DateFormatter.convertDateToDate(
-                            date))),
-
-
+                Column(crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Preferred Date : ${date}'),
+                    Text('Preferred Time : ${time}'),
+                  ],
+                ),
 
                 Get.find<AuthController>().isCustomerLoggedIn() ?
                     const SizedBox() :

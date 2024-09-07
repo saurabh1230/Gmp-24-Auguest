@@ -39,12 +39,12 @@ class SuitablePropertySection extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemCount: authControl.homeData!.propertyTypes!.length,
                     itemBuilder: (_,i) {
-                      return PrimaryCardContainer(width: 100,
+                      return PrimaryCardContainer(width: 160,
                         onTap: () {
                         Get.toNamed(RouteHelper.getExploreRoute(isBrowser: true,
                            propertyTypeId: authControl.homeData!.propertyTypes![i].sId.toString(),
                           title: authControl.homeData!.propertyTypes![i].name.toString(),
-                          purposeId: ''
+                          purposeId: '',direction: ''
                         ));
                           // Get.toNamed(RouteHelper.getSellAndRentDashboardRoute(
                           //     "Sale",

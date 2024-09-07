@@ -185,11 +185,15 @@ class _SellerHomeState extends State<SellerHome> {
                         ],
                       ),
                       Center(
-                          child: EmptyDataWidget(
-                            image: Images.emptyDataImage,
-                            fontColor: Theme.of(context).disabledColor,
-                            text: 'No Inquiries yet',
-                          )),
+                          child: Text('No Inquiries Yet')
+                          
+                          // EmptyDataWidget(
+                          //   image: Images.emptyDataImage,
+                          //   fontColor: Theme.of(context).disabledColor,
+                          //   text: 'No Inquiries yet',
+                          // )
+                      
+                      ),
                     ],
                   )
               

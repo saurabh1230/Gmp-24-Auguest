@@ -134,7 +134,6 @@ class PropertiesDetailsScreen extends StatelessWidget {
                         bathRoom:  list.bathroom.toString(),),
                       // const FloorPlansPricingSection(),
 
-
                       // PropertyLocationMapComponent(longitude: list.latitude, latitude: list.longitude,),
                       // const LocationAdvantageSection(),
                        ContactAgentComponent(tap: () {

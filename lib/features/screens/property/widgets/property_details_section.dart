@@ -44,8 +44,7 @@ class PropertyDetailsSection extends StatelessWidget {
                     fontSize: Dimensions.fontSize12,
                     color: Theme.of(context)
                         .disabledColor
-                        .withOpacity(0.40)),
-                maxLines: 3,
+                        .withOpacity(0.40)), maxLines: 3,
               ),
             )
           ],

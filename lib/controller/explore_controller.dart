@@ -47,14 +47,10 @@ class ExploreController extends GetxController implements GetxService {
     update();
   }
   final List<String> directionList = [
-    "North",
-    "North East",
-    "East",
-    "South East",
-    "South",
-    "South West",
-    "West",
-    "North-West"
+    "east",
+    "west",
+    "north",
+    "south ",
   ];
 
 // Convert the list of directions to a list of DropdownMenuItem<String>

@@ -24,11 +24,11 @@ class MapPropertySheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.find<PropertyController>().getPropertyList(page: '1',
-          lat: lat,
-          long:long,
-      purposeId: purposeId,
-      typeId: propertyTypeId);
+      // Get.find<PropertyController>().getPropertyList(page: '1',
+      //     lat: lat,
+      //     long:long,
+      // purposeId: purposeId,
+      // typeId: propertyTypeId);
     });
 
     return Container(
@@ -41,7 +41,7 @@ class MapPropertySheet extends StatelessWidget {
         )
       ),
       child: GetBuilder<PropertyController>(builder: (propertyControl) {
-        final list = propertyControl.propertyList;
+        final list = propertyControl.propertyLatList;
         final isListEmpty = list == null || list.isEmpty;
         final isLoading = propertyControl.isPropertyLoading;
         return  Column(

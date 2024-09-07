@@ -30,6 +30,13 @@ class ProfileScreen extends StatelessWidget {
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _registerTypeController = TextEditingController();
+  final _stateController = TextEditingController();
+  final _cityController = TextEditingController();
+  final _zipcodeController = TextEditingController();
+  final _websiteController = TextEditingController();
+
+
+
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -77,8 +84,14 @@ class ProfileScreen extends StatelessWidget {
             _phoneController.text = authControl.profileData?.phoneNumber?.toString() ?? '';
             _registerTypeController.text = authControl.profileData?.userType?.toString() ?? '';
 
+
+
             if(authControl.profileData!.userType == "vender") {
+              _nameController.text = authControl.profileData?.name?.toString() ?? '';
               _usernameController.text = authControl.profileData?.username?.toString() ?? '';
+
+
+
 
             } else {
 
@@ -192,29 +205,32 @@ class ProfileScreen extends StatelessWidget {
                                 hintText: "Username",
                                 editText: true,),
                               sizedBoxDefault(),
-                              const CustomTextField(
-                                showTitle: true,
-                                hintText: "State",
-                                editText: true,),
-                              sizedBoxDefault(),
-                              Row(
-                                children: [
-                                  const Expanded(
-                                    child: CustomTextField(
-                                      showTitle: true,
-                                      hintText: "City",
-                                      editText: false,),
-                                  ),
-                                  sizedBoxW10(),
-                                  const Expanded(
-                                    child: CustomTextField(
-                                      inputType: TextInputType.number,
-                                      showTitle: true,
-                                      hintText: "Zip-Code",
-                                      editText: false,),
-                                  ),
-                                ],
-                              ),
+                               // CustomTextField(
+                               //  controller: _stateController,
+                               //  showTitle: true,
+                               //  hintText: "State",
+                               //  editText: true,),
+                              // sizedBoxDefault(),
+                              // Row(
+                              //   children: [
+                              //      Expanded(
+                              //       child: CustomTextField(
+                              //         controller: _cityController,
+                              //         showTitle: true,
+                              //         hintText: "City",
+                              //         editText: false,),
+                              //     ),
+                              //     sizedBoxW10(),
+                              //      Expanded(
+                              //       child: CustomTextField(
+                              //         controller: _zipcodeController,
+                              //         inputType: TextInputType.number,
+                              //         showTitle: true,
+                              //         hintText: "Zip-Code",
+                              //         editText: false,),
+                              //     ),
+                              //   ],
+                              // ),
 
                             ],
                           ),

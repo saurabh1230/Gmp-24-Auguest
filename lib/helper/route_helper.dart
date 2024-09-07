@@ -64,8 +64,8 @@ class RouteHelper {
   static String getSavedRoute({bool isBackButton = false}) => '$saved?isHistory=${isBackButton.toString()}';
   static String getProfileRoute({bool isBackButton = false}) => '$profile?isBackButton=${isBackButton.toString()}';
   static String getSearchRoute() => search;
-  static String getExploreRoute({bool isBrowser = false, String? title, String? propertyTypeId, String? purposeId}) =>
-      '$explore?isBrowser=${isBrowser.toString()}&title=$title&propertyTypeId=$propertyTypeId&purposeId=$purposeId';
+  static String getExploreRoute({bool isBrowser = false, String? title, String? propertyTypeId, String? purposeId,String? direction}) =>
+      '$explore?isBrowser=${isBrowser.toString()}&title=$title&propertyTypeId=$propertyTypeId&purposeId=$purposeId&direction=$direction';
   static String getSellAndRentDashboardRoute(String page, String? type, String? typeId,String? purposeId,) => '$sellRentDashboard?page=$page&type=$type&typeId=$typeId&purposeId=$purposeId';
   static String getExploreSearchRoute(String? title) =>
       '$exploreSearch?&title=$title';
@@ -95,7 +95,7 @@ class RouteHelper {
     GetPage(name: saved, page: () => SavedScreen(isBackButton: Get.parameters['isHistory'] == 'true')),
     GetPage(name: profile, page: () => ProfileScreen(isBackButton: Get.parameters['isBackButton'] == 'true')),
     GetPage(name: explore, page: () => ExploreScreen(
-      isBrowser: Get.parameters['isBrowser'] == 'true',title: Get.parameters["title"],propertyTypeId: Get.parameters["propertyTypeId"],purposeId: Get.parameters["purposeId"] ,),),
+      isBrowser: Get.parameters['isBrowser'] == 'true',title: Get.parameters["title"],propertyTypeId: Get.parameters["propertyTypeId"],purposeId: Get.parameters["purposeId"] ,direction: Get.parameters["direction"] ,),),
     GetPage(name: sellRentDashboard, page: () => SaleAndRentDashboard(pageIndex:Get.parameters['page'] == 'Sale' ? 0 : 1, type: Get.parameters['type'],typeId: Get.parameters['typeId'],purposeId: Get.parameters['purposeId'],),),
     // GetPage(name: exploreSearch, page: () => ExploreSearchScreen(title: Get.parameters["title"],),),
     GetPage(name: ratingsAndReviews, page: () =>  RatingsAndReviewScreen()),

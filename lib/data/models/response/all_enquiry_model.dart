@@ -3,6 +3,8 @@ class AllEnquiryMode {
   final String propertyId;
   final String venderId;
   final String name;
+  final String date;
+  final String time;
   final int phoneNumber;
   final String email;
   final String message;
@@ -14,6 +16,8 @@ class AllEnquiryMode {
     required this.propertyId,
     required this.venderId,
     required this.name,
+    required this.date,
+    required this.time,
     required this.phoneNumber,
     required this.email,
     required this.message,
@@ -28,6 +32,8 @@ class AllEnquiryMode {
       propertyId: json['property_id'] ?? '',
       venderId: json['vender_id'] ?? '',
       name: json['name'] ?? '',
+      date: json['date'] ?? '',
+      time: json['time'] ?? '',
       phoneNumber: json['phone_number'] ?? 0,
       email: json['email'] ?? '',
       message: json['message'] ?? '',
@@ -45,6 +51,8 @@ class AllEnquiryMode {
       'name': name,
       'phone_number': phoneNumber,
       'email': email,
+      'date': date,
+      'time': time,
       'message': message,
       'status': status,
       'created_at': createdAt,
