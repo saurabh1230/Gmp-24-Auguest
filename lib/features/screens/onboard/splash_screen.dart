@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
         if (authController.isVendorLoggedIn()) {
           Get.offNamed(RouteHelper.getAdminDashboardRoute());
         } else if (authController.isCustomerLoggedIn()) {
-          final String? savedAddress =  authController.getSaveAddress();
+          final String? savedAddress =  authController.getSaveAddress().toString();
           if (savedAddress != null && savedAddress.isNotEmpty) {
             Get.offNamed(RouteHelper.getDashboardRoute());
           } else {

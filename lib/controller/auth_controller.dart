@@ -61,11 +61,14 @@ class AuthController extends GetxController implements GetxService {
 
   Future<void> saveAddress(String address) async {
     await sharedPreferences.setString(AppConstants.address, address);
+    update();
   }
 
   String? getSaveAddress() {
     return sharedPreferences.getString(AppConstants.address);
+    update();
   }
+
 
 
 
