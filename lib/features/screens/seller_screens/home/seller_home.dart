@@ -46,7 +46,9 @@ class _SellerHomeState extends State<SellerHome> {
       key: _scaffoldKey,
       drawer: const CustomDrawer(),
       appBar: CustomAppBar(title: "Dashboard", menuWidget: CustomNotificationButton(
-        tap: () {},
+        tap: () {
+          Get.toNamed(RouteHelper.getNotificationRoute());
+        },
       ),),
       body: GetBuilder<HomeController>(builder: (controller) {
         return GetBuilder<AuthController>(builder: (authControl) {
@@ -121,80 +123,83 @@ class _SellerHomeState extends State<SellerHome> {
                       },
                     ),
                   ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       Row(
+                  //         children: [
+                  //           Text(
+                  //             "Inquiry Request",
+                  //             style: senRegular.copyWith(fontSize: Dimensions.fontSize14, color: Theme.of(context).disabledColor),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //       SizedBox(
+                  //         height: 200,
+                  //         child: SfCartesianChart(
+                  //           // Initialize category axis
+                  //             primaryXAxis: const CategoryAxis(),
+                  //             series: <CartesianSeries>[
+                  //               // Initialize line series
+                  //               LineSeries<ChartData, String>(
+                  //                   dataSource: [
+                  //                     // Bind data source
+                  //                     ChartData('Jan', 35),
+                  //                     ChartData('Feb', 28),
+                  //                     ChartData('Mar', 34),
+                  //                     ChartData('Apr', 32),
+                  //                     ChartData('May', 40)
+                  //                   ],
+                  //                   xValueMapper: (ChartData data, _) => data.x,
+                  //                   yValueMapper: (ChartData data, _) => data.y
+                  //               )
+                  //             ]
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  sizedBox10(),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Inquiry Request",
-                              style: senRegular.copyWith(fontSize: Dimensions.fontSize14, color: Theme.of(context).disabledColor),
+                              "Latest Enquiry Requests",
+                              style: senRegular.copyWith(
+                                fontSize: Dimensions.fontSize14,
+                                color: Theme.of(context).disabledColor,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {},
+                              child: Text(
+                                "See All",
+                                style: senRegular.copyWith(
+                                  fontSize: Dimensions.fontSize14,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 200,
-                          child: SfCartesianChart(
-                            // Initialize category axis
-                              primaryXAxis: const CategoryAxis(),
-                              series: <CartesianSeries>[
-                                // Initialize line series
-                                LineSeries<ChartData, String>(
-                                    dataSource: [
-                                      // Bind data source
-                                      ChartData('Jan', 35),
-                                      ChartData('Feb', 28),
-                                      ChartData('Mar', 34),
-                                      ChartData('Apr', 32),
-                                      ChartData('May', 40)
-                                    ],
-                                    xValueMapper: (ChartData data, _) => data.x,
-                                    yValueMapper: (ChartData data, _) => data.y
-                                )
-                              ]
-                          ),
+                        Center(
+                            child: Text('No Inquiries Yet')
+
+                            // EmptyDataWidget(
+                            //   image: Images.emptyDataImage,
+                            //   fontColor: Theme.of(context).disabledColor,
+                            //   text: 'No Inquiries yet',
+                            // )
+
                         ),
                       ],
                     ),
-                  ),
-                  sizedBox10(),
-                  Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Latest Enquiry Requests",
-                            style: senRegular.copyWith(
-                              fontSize: Dimensions.fontSize14,
-                              color: Theme.of(context).disabledColor,
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              "See All",
-                              style: senRegular.copyWith(
-                                fontSize: Dimensions.fontSize14,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Center(
-                          child: Text('No Inquiries Yet')
-                          
-                          // EmptyDataWidget(
-                          //   image: Images.emptyDataImage,
-                          //   fontColor: Theme.of(context).disabledColor,
-                          //   text: 'No Inquiries yet',
-                          // )
-                      
-                      ),
-                    ],
                   )
               
                 ],
@@ -257,44 +262,44 @@ class _SellerHomeState extends State<SellerHome> {
                     },
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            "Inquiry Request",
-                            style: senRegular.copyWith(fontSize: Dimensions.fontSize14, color: Theme.of(context).disabledColor),
-                          ),
-                        ],
-                      ),
-                      // SizedBox(
-                      //   height: 200,
-                      //   child: SfCartesianChart(
-                      //     // Initialize category axis
-                      //       primaryXAxis: const CategoryAxis(),
-                      //       series: <CartesianSeries>[
-                      //         // Initialize line series
-                      //         LineSeries<ChartData, String>(
-                      //             dataSource: [
-                      //               // Bind data source
-                      //               ChartData('Jan', 35),
-                      //               ChartData('Feb', 28),
-                      //               ChartData('Mar', 34),
-                      //               ChartData('Apr', 32),
-                      //               ChartData('May', 40)
-                      //             ],
-                      //             xValueMapper: (ChartData data, _) => data.x,
-                      //             yValueMapper: (ChartData data, _) => data.y
-                      //         )
-                      //       ]
-                      //   ),
-                      // ),
-                    ],
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       Row(
+                //         children: [
+                //           Text(
+                //             "Inquiry Request",
+                //             style: senRegular.copyWith(fontSize: Dimensions.fontSize14, color: Theme.of(context).disabledColor),
+                //           ),
+                //         ],
+                //       ),
+                //       // SizedBox(
+                //       //   height: 200,
+                //       //   child: SfCartesianChart(
+                //       //     // Initialize category axis
+                //       //       primaryXAxis: const CategoryAxis(),
+                //       //       series: <CartesianSeries>[
+                //       //         // Initialize line series
+                //       //         LineSeries<ChartData, String>(
+                //       //             dataSource: [
+                //       //               // Bind data source
+                //       //               ChartData('Jan', 35),
+                //       //               ChartData('Feb', 28),
+                //       //               ChartData('Mar', 34),
+                //       //               ChartData('Apr', 32),
+                //       //               ChartData('May', 40)
+                //       //             ],
+                //       //             xValueMapper: (ChartData data, _) => data.x,
+                //       //             yValueMapper: (ChartData data, _) => data.y
+                //       //         )
+                //       //       ]
+                //       //   ),
+                //       // ),
+                //     ],
+                //   ),
+                // ),
                 sizedBox10(),
                 InquiryRequestSection(
                   inquiries: data.latestInquiries,
@@ -359,41 +364,41 @@ class SellerHomeShimmer extends StatelessWidget {
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      "Inquiry Request",
-                      style: senRegular.copyWith(fontSize: Dimensions.fontSize14, color: Theme.of(context).disabledColor),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 200,
-                  child: SfCartesianChart(
-                      primaryXAxis: const CategoryAxis(),
-                      series: <CartesianSeries>[
-                        LineSeries<ChartData, String>(
-                            dataSource: [
-                              ChartData('Jan', 35),
-                              ChartData('Feb', 28),
-                              ChartData('Mar', 34),
-                              ChartData('Apr', 32),
-                              ChartData('May', 40)
-                            ],
-                            xValueMapper: (ChartData data, _) => data.x,
-                            yValueMapper: (ChartData data, _) => data.y
-                        )
-                      ]
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+          //   child: Column(
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       Row(
+          //         children: [
+          //           Text(
+          //             "Inquiry Request",
+          //             style: senRegular.copyWith(fontSize: Dimensions.fontSize14, color: Theme.of(context).disabledColor),
+          //           ),
+          //         ],
+          //       ),
+          //       SizedBox(
+          //         height: 200,
+          //         child: SfCartesianChart(
+          //             primaryXAxis: const CategoryAxis(),
+          //             series: <CartesianSeries>[
+          //               LineSeries<ChartData, String>(
+          //                   dataSource: [
+          //                     ChartData('Jan', 35),
+          //                     ChartData('Feb', 28),
+          //                     ChartData('Mar', 34),
+          //                     ChartData('Apr', 32),
+          //                     ChartData('May', 40)
+          //                   ],
+          //                   xValueMapper: (ChartData data, _) => data.x,
+          //                   yValueMapper: (ChartData data, _) => data.y
+          //               )
+          //             ]
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
           sizedBox10(),
           const InquiryRequestShimmer(),
           sizedBox40(),

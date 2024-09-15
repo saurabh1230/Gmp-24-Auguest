@@ -46,9 +46,9 @@ class NewlyConstructedSection extends StatelessWidget {
             // NewlyConstructedSectionShimmer()
             Center(
                     child: EmptyDataWidget(
-                      image: Images.emptyDataImage,
+                      image: Images.icEmptyPropertyPlaceHolder,
                       fontColor: Theme.of(context).disabledColor,
-                      text: 'No Popular Properties yet',
+                      text: 'No Properties Near You',
                     ))
                 :
             SizedBox(

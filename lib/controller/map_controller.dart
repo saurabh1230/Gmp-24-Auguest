@@ -32,6 +32,7 @@ class MapController extends GetxController {
 
   List<LatLng> markerCoordinates = [];
   RxList<Map<String, String>> suggestions = <Map<String, String>>[].obs;
+  RxMap<LatLng, String> markerNames = <LatLng, String>{}.obs;
 
   String apiKey = 'AIzaSyBNB2kmkXSOtldNxPdJ6vPs_yaiXBG6SSU';
 
@@ -48,30 +49,22 @@ class MapController extends GetxController {
     await Get.find<PropertyController>().getPropertyLatLngList(
       page: '1',
       distance: '10',
-      // lat: selectedLatitude.toString(),
-      // long: selectedLongitude.toString(),
     );
 
     updateMarkerCoordinates(); // Update the markers after fetching the properties
-    Get.bottomSheet(
-      MapPropertySheet(
-        lat: selectedLatitude.toString(),
-        long: selectedLongitude.toString(),
-      ),
-      isScrollControlled: true,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(Dimensions.radius20),
-          topRight: Radius.circular(Dimensions.radius20),
-        ),
-      ),
-    );
-
   }
 
   Future<void> updateMarkerCoordinates() async {
     markerCoordinates = Get.find<PropertyController>().markerCoordinates;
+    markerNames.clear(); // Clear existing names
+    var propertyList = Get.find<PropertyController>().propertyLatList;
+    if (propertyList != null) {
+      for (var property in propertyList) {
+        double latitude = property.latitude ?? 0;
+        double longitude = property.longitude ?? 0;
+        markerNames[LatLng(latitude, longitude)] = property.title ?? 'No Name';
+      }
+    }
     update();
   }
 
@@ -142,27 +135,13 @@ class MapController extends GetxController {
         final location = data['result']['geometry']['location'];
         selectedLatitude = location['lat'];
         selectedLongitude = location['lng'];
-        print('fetch lovcation');
+        print('fetch location');
         // Update markerCoordinates with the new location and fetch properties
         await Get.find<PropertyController>().getPropertyLatLngList(
           page: '1',
           distance: '10',
           lat: selectedLatitude.toString(),
           long: selectedLongitude.toString(),
-        );
-        Get.bottomSheet(
-          MapPropertySheet(
-            lat: selectedLatitude.toString(),
-            long: selectedLongitude.toString(),
-          ),
-          isScrollControlled: true,
-          backgroundColor: Colors.white,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(Dimensions.radius20),
-              topRight: Radius.circular(Dimensions.radius20),
-            ),
-          ),
         );
 
         updateMarkerCoordinates();

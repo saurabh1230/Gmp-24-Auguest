@@ -83,9 +83,9 @@ class SellerPropertiesScreen extends StatelessWidget {
                 )
                 : list == null || list.isEmpty
                 ? Padding(
-                  padding: const EdgeInsets.only(top: Dimensions.paddingSize100),
+                  padding: const EdgeInsets.only(top: 0),
                   child: Center(child: EmptyDataWidget(
-                  image: Images.emptyDataImage,
+                  image: Images.icEmptyPropertyPlaceHolder,
                   fontColor: Theme.of(context).disabledColor,
                   text: 'No ${vendorControl.vendorPropertyStatusID.toUpperCase()} Property yet',
                                 ),

@@ -69,7 +69,9 @@ class ProfileScreen extends StatelessWidget {
           actions: [Padding(
             padding: const EdgeInsets.only(right: Dimensions.paddingSizeDefault),
             child: CustomNotificationButton(
-              tap: () {},
+              tap: () {
+                Get.toNamed(RouteHelper.getNotificationRoute());
+              },
             ),
           )],
         ),
@@ -85,15 +87,12 @@ class ProfileScreen extends StatelessWidget {
             _registerTypeController.text = authControl.profileData?.userType?.toString() ?? '';
 
 
-
             if(authControl.profileData!.userType == "vender") {
               _nameController.text = authControl.profileData?.name?.toString() ?? '';
               _usernameController.text = authControl.profileData?.username?.toString() ?? '';
 
-
-
-
             } else {
+
 
             }
 
@@ -281,10 +280,11 @@ class ProfileScreen extends StatelessWidget {
                               child: Text("Sign In & Security",style: senRegular.copyWith(fontSize: Dimensions.fontSize15,color: Theme.of(context).primaryColor),)),
                           sizedBox4(),
                           CustomTextField(
+                            readOnly: true,
                             controller: _registerTypeController,
                             showTitle: true,
-                            hintText: "Registered As",
-                            editText: true,),
+                            hintText: "Registered As (non editable)",
+                            editText: false,),
                           sizedBoxDefault(),
                           CustomTextField(
                             controller: _emailController,
@@ -296,9 +296,10 @@ class ProfileScreen extends StatelessWidget {
                             controller: _phoneController,
                             isAmount: true,
                             isNumber: true,
+                            readOnly: true,
                             showTitle: true,
-                            hintText: "Phone No",
-                            editText: true,),
+                            hintText: "Phone No (non editable)",
+                            editText: false,),
                           sizedBoxDefault(),
                           /*const CustomTextField(
                         showTitle: true,

@@ -122,10 +122,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                           child: Row(children: [
                              Icon(Icons.location_on_sharp,color : Theme.of(context).cardColor),
-                             Expanded(child: Text(authControl.getSaveAddress().toString(),
-                              maxLines: 2, overflow: TextOverflow.ellipsis,
-                              style: senRegular.copyWith(fontSize: Dimensions.fontSize14,
-                                  color: Theme.of(context).cardColor),)),
+                             Obx(() {
+                               final address = Get.find<AuthController>().address.value;
+                               return   Expanded(
+                                   child: Text(address,
+                                     maxLines: 2, overflow: TextOverflow.ellipsis,
+                                     style: senRegular.copyWith(fontSize: Dimensions.fontSize14,
+                                         color: Theme.of(context).cardColor),));
+                             })
+
                           ],),
                         ),
                       ],
@@ -194,7 +199,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child:
               Column(
                 children: [
-                  const SuitablePropertySection(),
+                  // const SuitablePropertySection(),
                   const RecomendedSection(),
                   const PopularInLocationSectionSection(),
                   // const ServicesSection(),

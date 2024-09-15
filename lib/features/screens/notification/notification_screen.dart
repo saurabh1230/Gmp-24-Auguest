@@ -14,7 +14,7 @@ class NotificationScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              EmptyDataWidget(image: Images.emptyDataImage, text: 'No Notifications Yet')
+              EmptyDataWidget(image: Images.icEmptyPropertyPlaceHolder, text: 'No Notifications Yet')
 
             ],
           ),

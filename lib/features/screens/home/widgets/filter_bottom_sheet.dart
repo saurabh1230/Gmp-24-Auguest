@@ -361,6 +361,8 @@ class FilterBottomSheet extends StatelessWidget {
                                           bathroom: controller.bathroomIDs.join(','),
                                           // categoryId:  controller.propertyCategoryIds.join(', '),
                                           amenityId: authControl.amenityIds.join(','),
+                                          // lat: Get.find<AuthController>().getLatitude().toString(),
+                                          // long: Get.find<AuthController>().getLongitude().toString(),
                                         );
 
                                         if (searchNavigation == true) {

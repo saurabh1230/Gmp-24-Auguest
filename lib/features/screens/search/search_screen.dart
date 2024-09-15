@@ -47,7 +47,7 @@ class SearchScreen extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(
                   left: Dimensions.paddingSizeDefault,
-                  right: Dimensions.paddingSizeDefault,bottom: Dimensions.paddingSizeDefault),
+                  right: Dimensions.paddingSizeDefault,bottom: Dimensions.paddingSize40),
               child: Row(
                 children: [
                   TextButton(
@@ -173,9 +173,11 @@ class SearchScreen extends StatelessWidget {
                           padding: const EdgeInsets.all(Dimensions.paddingSize12),
                           child: Row(
                             children: [
-                              Icon(CupertinoIcons.arrow_up_right,
+                              Icon(
+                                CupertinoIcons.arrow_up_right,
                                 size: Dimensions.fontSizeDefault,
-                                color: Theme.of(context).disabledColor.withOpacity(0.60),),
+                                color: Theme.of(context).disabledColor.withOpacity(0.60),
+                              ),
                               sizedBoxW5(),
                               Expanded(
                                 child: RichText(
@@ -183,12 +185,14 @@ class SearchScreen extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis,
                                   text: TextSpan(
                                     text: '',
-                                    style: DefaultTextStyle.of(context).style.copyWith(color: Colors.black,),
+                                    style: DefaultTextStyle.of(context).style.copyWith(color: Colors.black),
                                     children: <TextSpan>[
                                       TextSpan(
                                         text: suggestion,
-                                        style: senRegular.copyWith(color: Theme.of(context).disabledColor,
-                                            fontSize: Dimensions.fontSizeDefault),
+                                        style: senRegular.copyWith(
+                                          color: Theme.of(context).disabledColor,
+                                          fontSize: Dimensions.fontSizeDefault,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -202,16 +206,18 @@ class SearchScreen extends StatelessWidget {
                         _controller.text = suggestion;
                         Get.to(() => SearchPropertyScreen(
                           searchText: _controller.text.trim(),
-                          purposeId: authControl.propertyPurposeID,
+                          purposeId: '',
                         ));
                       },
-                      noItemsFoundBuilder: (context) => const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child:
-                            Text('No Matching Option Found Please Type Complete query'),
-                      ),
+                      noItemsFoundBuilder: (context) => const SizedBox.shrink(), // Hides the no items found message
                       textFieldConfiguration: TextFieldConfiguration(
                         controller: _controller,
+                        onSubmitted: (val) {
+                          Get.to(SearchPropertyScreen(
+                            searchText: _controller.text.trim(),
+                            purposeId: '',
+                          ));
+                        },
                         decoration: InputDecoration(
                           fillColor: Theme.of(context).cardColor,
                           filled: true,
@@ -224,6 +230,7 @@ class SearchScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+
                   // Padding(
                   //   padding:
                   //       const EdgeInsets.all(Dimensions.paddingSizeDefault),

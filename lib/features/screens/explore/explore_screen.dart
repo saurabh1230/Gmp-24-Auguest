@@ -49,7 +49,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if(widget.isBrowser == true) {
         Get.find<PropertyController>().getPropertyList(page: '1',typeId:widget.propertyTypeId,
-            purposeId: widget.purposeId,direction: widget.direction );
+            purposeId: widget.purposeId,direction: widget.direction,
+          lat: Get.find<AuthController>().getLatitude().toString(),
+          long: Get.find<AuthController>().getLongitude().toString(),);
       } else {
         print('check');
         print(Get.find<AuthController>().getLatitude().toString());
@@ -75,7 +77,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
         );
         Get.find<PropertyController>().getPropertyList(page: '1',);
-        Get.find<PropertyController>().getTopPopularPropertyList(page: '1',);
+        Get.find<PropertyController>().getTopPopularPropertyList(page: '1',
+            lat: Get.find<AuthController>().getLatitude().toString(),
+            long: Get.find<AuthController>().getLongitude().toString(),
+            direction: ''
+
+
+        );
         return true;
       },
       child: Scaffold(
@@ -93,8 +101,11 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   long: Get.find<AuthController>().getLongitude().toString(),
                   direction: ''
               );
-              Get.find<PropertyController>().getPropertyList(page: '1',);
-              Get.find<PropertyController>().getTopPopularPropertyList(page: '1',);
+              Get.find<PropertyController>().getTopPopularPropertyList(page: '1',
+                  lat: Get.find<AuthController>().getLatitude().toString(),
+                  long: Get.find<AuthController>().getLongitude().toString(),
+                  direction: ''
+              );
               Get.back();
             },
           ) :  Builder(
@@ -183,7 +194,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                       child: EmptyDataWidget(
                         image: Images.icSearchPlaceHolder,
                         fontColor: Theme.of(context).disabledColor,
-                        text: 'No ${widget.title} Found',
+                        text:
+                        'No Property Found Near you',
                       ),
                     )
                         :

@@ -33,6 +33,7 @@ class Images {
   static const String emptyDataImage = 'assets/images/ic_empty_data_image.png';
   static const String icLogout = 'assets/icons/ic_logout.png';
   static const String icSearchPlaceHolder = 'assets/icons/ic_search_placeholder.png';
+  static const String icEmptyPropertyPlaceHolder = 'assets/images/empty-property-avatar.png';
   static const String icEdit = 'assets/icons/ic_editicon.png';
   static const String icAgentProfile = 'assets/icons/ic_agent_holder.png';
   static const String icRupee = 'assets/icons/ic_rupee.png';

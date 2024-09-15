@@ -44,12 +44,12 @@ class PopularInLocationSectionSection extends StatelessWidget {
                 ?
             // RecommendedSectionShimmer(title: 'Top Properties ',)
               Padding(
-              padding: const EdgeInsets.only(top: Dimensions.paddingSize100),
+              padding: const EdgeInsets.only(top: 0),
               child: Center(
                   child: EmptyDataWidget(
-                    image: Images.emptyDataImage,
+                    image: Images.icEmptyPropertyPlaceHolder,
                     fontColor: Theme.of(context).disabledColor,
-                    text: 'No Popular Properties yet',
+                    text: 'No Properties Near You',
                   )),
             )
                 :

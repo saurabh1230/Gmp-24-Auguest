@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_my_properties/controller/map_controller.dart';
 import 'package:get_my_properties/features/screens/Maps/widgets/map_property_bottomsheet.dart';
+import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
+import 'package:get_my_properties/features/widgets/custom_app_button.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
@@ -11,6 +13,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 class PropertiesMapScreen extends StatelessWidget {
   final String purposeId;
   final String propertyTypeId;
+
   const PropertiesMapScreen({
     Key? key,
     required this.purposeId,
@@ -56,6 +59,9 @@ class PropertiesMapScreen extends StatelessWidget {
                   return Marker(
                     markerId: MarkerId(coord.toString()),
                     position: coord,
+                    infoWindow: InfoWindow(
+                      title: locationControl.markerNames[coord] ?? 'No Name',
+                    ),
                   );
                 }).toSet(),
               ),
@@ -88,20 +94,6 @@ class PropertiesMapScreen extends StatelessWidget {
                       onSuggestionSelected: (suggestion) async {
                         String placeId = suggestion['place_id'] ?? '';
                         await locationControl.fetchLocationDetails(placeId);
-                        // Get.bottomSheet(
-                        //   MapPropertySheet(
-                        //     lat: locationControl.selectedLatitude.toString(),
-                        //     long: locationControl.selectedLongitude.toString(),
-                        //   ),
-                        //   isScrollControlled: true,
-                        //   backgroundColor: Colors.white,
-                        //   shape: const RoundedRectangleBorder(
-                        //     borderRadius: BorderRadius.only(
-                        //       topLeft: Radius.circular(Dimensions.radius20),
-                        //       topRight: Radius.circular(Dimensions.radius20),
-                        //     ),
-                        //   ),
-                        // );
 
                         if (locationControl.selectedLatitude != null &&
                             locationControl.selectedLongitude != null) {
@@ -117,8 +109,6 @@ class PropertiesMapScreen extends StatelessWidget {
                             );
                             return;
                           }
-
-
                         }
                       },
                     ),
@@ -126,6 +116,26 @@ class PropertiesMapScreen extends StatelessWidget {
                     Text(
                       'Note: Currently, we are only available in West Bengal',
                       style: senRegular.copyWith(fontSize: 12),
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                bottom: Dimensions.paddingSizeDefault,
+                left: Dimensions.paddingSizeDefault,
+                right: Dimensions.paddingSizeDefault,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: CustomButtonWidget(
+                        fontSize: Dimensions.fontSize14,
+                        onPressed: () {
+                          Get.back();
+                        },
+                        buttonText: 'Go Back',
+                        isBold: false,
+                      ),
                     ),
                   ],
                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
 import 'package:get_my_properties/features/screens/explore/explore_screen.dart';
 import 'package:get_my_properties/features/screens/home/widgets/filter_bottom_sheet.dart';
@@ -27,8 +28,8 @@ class SearchPropertyScreen extends StatelessWidget {
       Get.find<PropertyController>().getSearchPropertyList(
         page: '1',
         limit: '10',
-        latitude: '',
-        longitude: '',
+          // latitude: Get.find<AuthController>().getLatitude().toString(),
+          // longitude: Get.find<AuthController>().getLongitude().toString(),
         query: '${searchText}',
         purposeId: '${purposeId}');
     });
