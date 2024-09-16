@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_my_properties/controller/map_controller.dart';
+import 'package:get_my_properties/controller/property_controller.dart';
 import 'package:get_my_properties/features/screens/Maps/widgets/map_property_bottomsheet.dart';
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
@@ -129,12 +130,15 @@ class PropertiesMapScreen extends StatelessWidget {
                   children: [
                     Flexible(
                       child: CustomButtonWidget(
-                        fontSize: Dimensions.fontSize14,
                         onPressed: () {
+
+                          Get.find<PropertyController>().getPropertyList(page: '1',
+                            lat:  locationControl.selectedLatitude.toString(),
+                            long: locationControl.selectedLongitude!.toString(),
+                          );
                           Get.back();
                         },
-                        buttonText: 'Go Back',
-                        isBold: false,
+                        buttonText: 'Save',
                       ),
                     ),
                   ],

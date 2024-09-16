@@ -50,16 +50,17 @@ class _ExploreScreenState extends State<ExploreScreen> {
       if(widget.isBrowser == true) {
         Get.find<PropertyController>().getPropertyList(page: '1',typeId:widget.propertyTypeId,
             purposeId: widget.purposeId,direction: widget.direction,
-          lat: Get.find<AuthController>().getLatitude().toString(),
-          long: Get.find<AuthController>().getLongitude().toString(),);
+          // lat: Get.find<AuthController>().getLatitude().toString(),
+          // long: Get.find<AuthController>().getLongitude().toString(),
+        );
       } else {
         print('check');
         print(Get.find<AuthController>().getLatitude().toString());
         print(Get.find<AuthController>().getLatitude().toString());
 
         Get.find<PropertyController>().getPropertyList(page: '1',
-          lat: Get.find<AuthController>().getLatitude().toString(),
-          long: Get.find<AuthController>().getLongitude().toString(),
+          // lat: Get.find<AuthController>().getLatitude().toString(),
+          // long: Get.find<AuthController>().getLongitude().toString(),
         );
       }
     });
