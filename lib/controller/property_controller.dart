@@ -231,6 +231,108 @@ class PropertyController extends GetxController implements GetxService {
     }
   }
 
+  List<PropertyModel>? _explorePropertyList;
+  List<PropertyModel>? get explorePropertyList => _explorePropertyList;
+  Future<void> getExplorePropertyList({
+    String? page,
+    String? stateId,
+    String? cityId,
+    String? localityId,
+    String? purposeId,
+    String? categoryId,
+    String? amenityId,
+    String? typeId,
+    String? limit,
+    String? userId,
+    String? minPrice,
+    String? maxPrice,
+    String? sortBy,
+    String? lat,
+    String? long,
+    String? direction,
+    String? bathroom,
+    String? space,
+    String? distance,
+  }) async {
+    _isPropertyLoading = true;
+    try {
+      if (page == '1') {
+        _pageList = []; // Reset page list for new search
+        _offset = 1;
+        _explorePropertyList = []; // Reset product list for the first page
+        // markerCoordinates=[];
+        update();
+      }
+      if (!_pageList.contains(page)) {
+        _pageList.add(page!);
+        Response response = await propertyRepo.getUserProperty(
+          stateId: stateId,
+          cityId: cityId,
+          localityId: localityId,
+          purposeId: purposeId,
+          categoryId: categoryId,
+          amenityId: amenityId,
+          typeId: typeId,
+          page: page,
+          limit: '40',
+          userId: userId,
+          minPrice: minPrice,
+          maxPrice: maxPrice,
+          sortBy: sortBy,
+          lat: lat,
+          long: long,
+          direction: direction,
+          bathroom: bathroom,
+          space: space,
+          distance: '10',
+        );
+
+        if (response.statusCode == 200) {
+          List<dynamic> dataList = response.body['data'];
+          List<PropertyModel> newDataList = dataList.map((json) => PropertyModel.fromJson(json)).toList();
+
+          if (page == '1') {
+
+            _explorePropertyList = newDataList;
+          } else {
+            _explorePropertyList!.addAll(newDataList);
+          }
+
+          // List<PropertyModel> topProperties = newDataList.where((property) => property.topProperty == true).toList();
+          // if (topProperties.isNotEmpty) {
+          //   _topPropertyList!.addAll(topProperties);
+          // }
+          //
+          // List<PropertyModel> featuredProperties = newDataList.where((property) => property.isFeatured == true).toList();
+          // if (topProperties.isNotEmpty) {
+          //   _featuredPropertyList!.addAll(featuredProperties);
+          // }
+
+          // markerCoordinates = newDataList.map((property) {
+          //   double latitude =  property.latitude ?? 0;
+          //   double longitude = property.longitude ?? 0;
+          //   return LatLng(latitude, longitude);
+          // }).toList();
+          //   print(' ============>>${markerCoordinates.length}');
+          _isPropertyLoading = false;
+          update();
+        } else {
+
+        }
+      } else {
+        if (_isPropertyLoading) {
+          _isPropertyLoading = false;
+          update();
+        }
+      }
+    } catch (e) {
+      print('Error fetching property list: $e');
+      _isPropertyLoading = false;
+      update();
+    }
+  }
+
+
 
 
 

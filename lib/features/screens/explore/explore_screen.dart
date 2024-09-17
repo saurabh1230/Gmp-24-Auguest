@@ -23,6 +23,8 @@ import 'package:get_my_properties/utils/images.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
 
+import '../../../controller/map_controller.dart';
+
 class ExploreScreen extends StatefulWidget {
   final bool? isBrowser;
   final String? title;
@@ -48,21 +50,42 @@ class _ExploreScreenState extends State<ExploreScreen> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if(widget.isBrowser == true) {
+        Get.find<PropertyController>().getExplorePropertyList(
+          page: '1',typeId:widget.propertyTypeId,
+          purposeId: widget.purposeId,direction: widget.direction,
+        );
         Get.find<PropertyController>().getPropertyList(page: '1',typeId:widget.propertyTypeId,
             purposeId: widget.purposeId,direction: widget.direction,
           // lat: Get.find<AuthController>().getLatitude().toString(),
           // long: Get.find<AuthController>().getLongitude().toString(),
         );
       } else {
-        print('check');
-        print(Get.find<AuthController>().getLatitude().toString());
-        print(Get.find<AuthController>().getLatitude().toString());
-
-        Get.find<PropertyController>().getPropertyList(page: '1',
-          // lat: Get.find<AuthController>().getLatitude().toString(),
-          // long: Get.find<AuthController>().getLongitude().toString(),
+        double? latitude = Get.find<AuthController>().getExploreLatitude();
+        double? longitude = Get.find<AuthController>().getExploreLongitude();
+        Get.find<PropertyController>().getExplorePropertyList(
+          page: '1',
+          lat: latitude != null ? latitude.toString() : '',
+          long: longitude != null ? longitude.toString() : '',
         );
       }
+      double? latitude = Get.find<AuthController>().getExploreLatitude();
+      double? longitude = Get.find<AuthController>().getExploreLongitude();
+      if (latitude == null || longitude == null) {
+        Get.find<PropertyController>().getPropertyLatLngList(
+          page: '1',
+          distance: '10',
+        );
+      } else {
+        Get.find<PropertyController>().getPropertyLatLngList(
+          page: '1',
+          lat: latitude.toString(),
+          long: longitude.toString(),
+        );
+      }
+      // Get.find<PropertyController>().getPropertyLatLngList(
+      //   page: '1',
+      //   distance: '10',
+      // );
     });
     super.initState();
   }
@@ -143,7 +166,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
         //   ),
         // ),
         body: GetBuilder<PropertyController>(builder: (propertyControl) {
-          final list = propertyControl.propertyList;
+          final list = propertyControl.explorePropertyList;
           final isListEmpty = list == null || list.isEmpty;
           final isLoading = propertyControl.isPropertyLoading;
           return Column(
@@ -160,7 +183,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
                           propertyTypeId:
                           widget.propertyTypeId != null ?
                           widget.propertyTypeId.toString() : '',
-
                         ));
                       },)),
                     sizedBoxW5(),

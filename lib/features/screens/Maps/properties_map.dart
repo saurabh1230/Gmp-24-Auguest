@@ -11,6 +11,8 @@ import 'package:get_my_properties/utils/styles.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
+import '../../../controller/auth_controller.dart';
+
 class PropertiesMapScreen extends StatelessWidget {
   final String purposeId;
   final String propertyTypeId;
@@ -42,9 +44,9 @@ class PropertiesMapScreen extends StatelessWidget {
       ),
       body: GetBuilder<MapController>(
         builder: (locationControl) {
-          if (locationControl.markerCoordinates.isEmpty) {
-            return const Center(child: CircularProgressIndicator());
-          }
+          // if (locationControl.markerCoordinates.isEmpty) {
+          //   return const Center(child: CircularProgressIndicator());
+          // }
 
           return Stack(
             children: [
@@ -131,12 +133,20 @@ class PropertiesMapScreen extends StatelessWidget {
                     Flexible(
                       child: CustomButtonWidget(
                         onPressed: () {
+                          if (locationControl.selectedLatitude == null || locationControl.selectedLongitude == null ) {
+                            Get.back();
 
-                          Get.find<PropertyController>().getPropertyList(page: '1',
-                            lat:  locationControl.selectedLatitude.toString(),
-                            long: locationControl.selectedLongitude!.toString(),
-                          );
-                          Get.back();
+                          } else {
+                            Get.find<AuthController>().saveExploreLatitude(locationControl.selectedLatitude!);
+                            Get.find<AuthController>().saveExploreLongitude(locationControl.selectedLongitude!);
+                            Get.find<PropertyController>().getExplorePropertyList(page: '1',
+                              lat:  locationControl.selectedLatitude.toString(),
+                              long: locationControl.selectedLongitude.toString(),
+                            );
+                            Get.back();
+
+                          }
+
                         },
                         buttonText: 'Save',
                       ),

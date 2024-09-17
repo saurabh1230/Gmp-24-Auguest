@@ -55,6 +55,8 @@ class AppConstants {
   static const String latitude = 'latitude';
   static const String longitude = 'longitude';
   static const String address = 'address';
+  static const String exploreLatitude = 'explore-latitude';
+  static const String exploreLongitude = 'explore-longitude';
 
 
 }

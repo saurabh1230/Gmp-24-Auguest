@@ -1,12 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_my_properties/controller/property_controller.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
-import '../features/screens/Maps/widgets/map_property_bottomsheet.dart';
-import '../utils/dimensions.dart';
+import '../controller/auth_controller.dart';
+import '../controller/property_controller.dart';
 
 class MapController extends GetxController {
   GoogleMapController? mapController;
@@ -45,13 +44,22 @@ class MapController extends GetxController {
   }
 
   Future<void> fetchInitialProperties() async {
-    print('initial');
-    await Get.find<PropertyController>().getPropertyLatLngList(
-      page: '1',
-      distance: '10',
-    );
+    double? latitude = Get.find<AuthController>().getExploreLatitude();
+    double? longitude = Get.find<AuthController>().getExploreLongitude();
 
-    updateMarkerCoordinates(); // Update the markers after fetching the properties
+    if (latitude == null || longitude == null) {
+      Get.find<PropertyController>().getPropertyLatLngList(
+        page: '1',
+        distance: '10',
+      );
+    } else {
+      Get.find<PropertyController>().getPropertyLatLngList(
+        page: '1',
+        lat: latitude.toString(),
+        long: longitude.toString(),
+      );
+    }
+    updateMarkerCoordinates();
   }
 
   Future<void> updateMarkerCoordinates() async {
@@ -66,6 +74,7 @@ class MapController extends GetxController {
       }
     }
     update();
+    focusOnMarkers();
   }
 
   void onMapCreated(GoogleMapController controller) {
@@ -75,8 +84,21 @@ class MapController extends GetxController {
 
   void focusOnMarkers() {
     if (mapController != null && markerCoordinates.isNotEmpty) {
-      LatLngBounds bounds = getBounds();
-      mapController!.animateCamera(CameraUpdate.newLatLngBounds(bounds, 100));
+      if (markerCoordinates.length == 1) {
+        // If there's only one marker, focus on it with a zoom level
+        mapController!.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(
+              target: markerCoordinates.first,
+              zoom: 14.0, // Adjust the zoom level to your preference
+            ),
+          ),
+        );
+      } else {
+        // If there are multiple markers, calculate the bounds
+        LatLngBounds bounds = getBounds();
+        mapController!.animateCamera(CameraUpdate.newLatLngBounds(bounds, 70));
+      }
     }
   }
 
@@ -135,8 +157,7 @@ class MapController extends GetxController {
         final location = data['result']['geometry']['location'];
         selectedLatitude = location['lat'];
         selectedLongitude = location['lng'];
-        print('fetch location');
-        // Update markerCoordinates with the new location and fetch properties
+
         await Get.find<PropertyController>().getPropertyLatLngList(
           page: '1',
           distance: '10',
