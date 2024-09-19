@@ -92,7 +92,7 @@ class DashboardScreenState extends State<DashboardScreen> {
             shape: const CircularNotchedRectangle(),
 
             child: Padding(
-              padding: const EdgeInsets.all(0/*Dimensions.paddingSize20*/),
+              padding: const EdgeInsets.all(0),
               child: Row(children: [
                 BottomNavItem(img: Images.navBarHome, isSelected: _pageIndex == 0, tap: () => _setPage(0), title: 'Home',),
                 BottomNavItem(img: Images.navBarExplore, isSelected: _pageIndex == 1, tap: () => _setPage(1), title: 'Explore',),

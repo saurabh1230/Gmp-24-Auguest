@@ -211,6 +211,37 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   ],
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+                child: RichText(textAlign: TextAlign.center,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '${list!.length} ',
+                        style: senSemiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
+                            color: Theme.of(context).primaryColor),
+                      ),
+                      TextSpan(
+                        text: 'Properties ',
+                        style: senSemiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
+                            color: Theme.of(context).primaryColor),
+                      ),
+                      TextSpan(
+                        text: Get.find<AuthController>().getExploreAddress() == null ||
+                            Get.find<AuthController>().getExploreAddress().toString().isEmpty
+                            ? 'Available For You'
+                            : 'Available in ${Get.find<AuthController>().getExploreAddress().toString()}',
+                        style: senRegular.copyWith(
+                          fontSize: Dimensions.fontSize14,
+                          color: Theme.of(context).disabledColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+               sizedBox10(),
+
                Expanded(
                     child: isListEmpty && !isLoading
                         ? Center(

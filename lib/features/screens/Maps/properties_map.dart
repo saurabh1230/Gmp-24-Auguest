@@ -17,12 +17,13 @@ class PropertiesMapScreen extends StatelessWidget {
   final String purposeId;
   final String propertyTypeId;
 
-  const PropertiesMapScreen({
+   PropertiesMapScreen({
     Key? key,
     required this.purposeId,
     required this.propertyTypeId,
   }) : super(key: key);
 
+  final _locationController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final MapController mapController = Get.put(MapController());
@@ -76,7 +77,9 @@ class PropertiesMapScreen extends StatelessWidget {
                   children: [
                     TypeAheadField(
                       textFieldConfiguration: TextFieldConfiguration(
+                        controller: _locationController,
                         decoration: InputDecoration(
+
                           filled: true,
                           fillColor: Theme.of(context).cardColor,
                           hintText: 'Search Location',
@@ -97,6 +100,7 @@ class PropertiesMapScreen extends StatelessWidget {
                       onSuggestionSelected: (suggestion) async {
                         String placeId = suggestion['place_id'] ?? '';
                         await locationControl.fetchLocationDetails(placeId);
+                        _locationController.text = suggestion['description'] ?? '';
 
                         if (locationControl.selectedLatitude != null &&
                             locationControl.selectedLongitude != null) {
@@ -135,18 +139,16 @@ class PropertiesMapScreen extends StatelessWidget {
                         onPressed: () {
                           if (locationControl.selectedLatitude == null || locationControl.selectedLongitude == null ) {
                             Get.back();
-
                           } else {
                             Get.find<AuthController>().saveExploreLatitude(locationControl.selectedLatitude!);
                             Get.find<AuthController>().saveExploreLongitude(locationControl.selectedLongitude!);
+                            Get.find<AuthController>().saveExploreAddress(_locationController.text);
                             Get.find<PropertyController>().getExplorePropertyList(page: '1',
                               lat:  locationControl.selectedLatitude.toString(),
                               long: locationControl.selectedLongitude.toString(),
                             );
                             Get.back();
-
                           }
-
                         },
                         buttonText: 'Save',
                       ),

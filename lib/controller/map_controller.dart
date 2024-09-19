@@ -170,7 +170,7 @@ class MapController extends GetxController {
     }
   }
 
-  // Check if the given location is within West Bengal
+
   bool isWithinWestBengal(double lat, double long) {
     double minLat = 21.5422;
     double maxLat = 27.6217;

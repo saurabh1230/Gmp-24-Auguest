@@ -91,6 +91,15 @@ class AuthController extends GetxController implements GetxService {
     return sharedPreferences.getDouble(AppConstants.exploreLongitude);
   }
 
+  Future<void> saveExploreAddress(String address) async {
+    await sharedPreferences.setString(AppConstants.exploreAddress, address);
+  }
+
+  String? getExploreAddress() {
+    return sharedPreferences.getString(AppConstants.exploreAddress);
+  }
+
+
   var address = ''.obs;
   @override
   void onInit() {

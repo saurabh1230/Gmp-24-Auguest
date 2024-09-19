@@ -333,11 +333,7 @@ class ProfileScreen extends StatelessWidget {
                                   image: profileControl.pickedImage != null && profileControl.pickedImage!.path.isNotEmpty
                                       ? profileControl.pickedImage
                                       : null,);
-
-
                                 // Get.toNamed(RouteHelper.getDashboardRoute());
-
-
                               } else {
                                 profileControl.updateVendorProfile(
                                   name: _nameController.text,
