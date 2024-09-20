@@ -73,7 +73,7 @@ class SearchPropertyScreen extends StatelessWidget {
                     buttonText: 'Add Filters',
                   onPressed: () {
                     Get.bottomSheet(
-                      const FilterBottomSheet(),
+                      const FilterBottomSheet(searchNavigation: false,),
                       backgroundColor: Colors.transparent,
                       isScrollControlled: true,
                     );

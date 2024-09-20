@@ -5,9 +5,6 @@ import 'package:get_my_properties/controller/property_controller.dart';
 import 'package:get_my_properties/features/screens/search/search_property_screen.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
 import 'package:get_my_properties/features/widgets/custom_buttons.dart';
-import 'package:get_my_properties/features/widgets/custom_dropdown_button.dart';
-import 'package:get_my_properties/features/widgets/filter_data_field.dart';
-import 'package:get_my_properties/features/widgets/group_radio_buttons.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
@@ -16,7 +13,9 @@ import 'package:get_my_properties/utils/theme/price_converter.dart';
 
 class FilterBottomSheet extends StatelessWidget {
   final bool? searchNavigation;
-  const FilterBottomSheet({super.key, this.searchNavigation = false, });
+  final bool? isExplore;
+
+  const FilterBottomSheet({super.key, this.searchNavigation = false,  this.isExplore = false,});
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +30,7 @@ class FilterBottomSheet extends StatelessWidget {
           borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(Dimensions.radius10),
         topRight: Radius.circular(Dimensions.radius10),
-
       )),
-
       child: StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
           return  Column(
@@ -350,29 +347,40 @@ class FilterBottomSheet extends StatelessWidget {
                                         print('bathroomID: ${controller.bathroomIDs.join(',')}');
                                         print('propertyCategoryIds: ${controller.propertyCategoryIds.join(', ')}');
                                         print('amenityId: ${authControl.amenityIds.join(',')}');
-                                        Get.find<PropertyController>().getPropertyList(page: '1',
-                                          stateId: '',
-                                          cityId: '',
-                                          purposeId: authControl.propertyPurposeID,
-                                          typeId: authControl.propertyTypeIDs.join(','),
-                                          minPrice: controller.formatPrice(controller.startPriceValue.toDouble()),
-                                          maxPrice: controller.formatPrice(controller.endPriceValue.toDouble()),
-                                          space: controller.spaceTypeIDs.join(','),
-                                          bathroom: controller.bathroomIDs.join(','),
-                                          // categoryId:  controller.propertyCategoryIds.join(', '),
-                                          amenityId: authControl.amenityIds.join(','),
-                                          // lat: Get.find<AuthController>().getLatitude().toString(),
-                                          // long: Get.find<AuthController>().getLongitude().toString(),
-                                        );
-
-                                        if (searchNavigation == true) {
-                                          Get.to(() => SearchPropertyScreen(searchText: '', purposeId: '',));
-
-
-                                        } else {
+                                        if (isExplore == true) {
+                                          Get.find<PropertyController>().getExplorePropertyList(
+                                            page: '1',
+                                            stateId: '',
+                                            cityId: '',
+                                            purposeId: authControl.propertyPurposeID,
+                                            typeId: authControl.propertyTypeIDs.join(','),
+                                            minPrice: controller.formatPrice(controller.startPriceValue.toDouble()),
+                                            maxPrice: controller.formatPrice(controller.endPriceValue.toDouble()),
+                                            space: controller.spaceTypeIDs.join(','),
+                                            bathroom: controller.bathroomIDs.join(','),
+                                            amenityId: authControl.amenityIds.join(','),
+                                          );
                                           Get.back();
+                                        } else {
+                                          Get.find<PropertyController>().getPropertyList(page: '1',
+                                            stateId: '',
+                                            cityId: '',
+                                            purposeId: authControl.propertyPurposeID,
+                                            typeId: authControl.propertyTypeIDs.join(','),
+                                            minPrice: controller.formatPrice(controller.startPriceValue.toDouble()),
+                                            maxPrice: controller.formatPrice(controller.endPriceValue.toDouble()),
+                                            space: controller.spaceTypeIDs.join(','),
+                                            bathroom: controller.bathroomIDs.join(','),
+                                            amenityId: authControl.amenityIds.join(','),
+                                          );
+                                          if (searchNavigation == true) {
+                                            Get.to(() => SearchPropertyScreen(searchText: '', purposeId: '',));
+                                          } else {
+                                            Get.back();
+                                          }
 
                                         }
+
 
                                       },
                                     ),

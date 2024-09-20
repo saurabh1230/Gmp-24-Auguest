@@ -192,7 +192,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                       filterText: "",
                       tap: () {
                         Get.bottomSheet(
-                          const FilterBottomSheet(),
+                          const FilterBottomSheet(isExplore: true,),
                           backgroundColor: Colors.transparent, isScrollControlled: true,
                         );
                       },)),
